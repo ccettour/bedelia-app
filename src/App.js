@@ -1,9 +1,12 @@
 import './App.css';
+import { Footer } from './componentes/Footer/Footer';
+import {Header} from './componentes/Header/Header';
 
 function App() {
   return (
     <div className="App">
-      <h1>Integrador</h1>
+      <Header/>
+      <Footer/>
     </div>
   );
 }
