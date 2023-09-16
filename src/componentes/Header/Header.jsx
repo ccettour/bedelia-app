@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import { BrowserRouter, Route, Link, Routes } from 'react-router-dom';
 
-import { Institucional } from '../Institucional/Institucional';
+import { InformacionComponente } from '../Institucional/Institucional';
 import { Contacto } from '../Contacto/Contacto';
 import { Inicio } from '../Inicio/Inicio';
 import imgFCAD from './img/fcad.jpeg';
@@ -28,7 +28,7 @@ export function Header() {
       </Navbar>
     </>
     <Routes>
-      <Route path='institucional' element={<Institucional/>}></Route>
+      <Route path='institucional' element={<InformacionComponente/>}></Route>
       <Route path='contacto' element={<Contacto/>}></Route>
       <Route path='/' element={<Inicio/>}></Route>
     </Routes>
