@@ -1,19 +1,32 @@
-.contacto {
-    height: 100vh;
-    padding: 80px 10vw;
+.body{
     background-color: rgb(48,48,48);
     font-family: Montserrat, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', Verdana, Geneva, sans-serif;
 }
 
+.contacto {
+    height: 100vh;
+    padding: 80px 10vw;
+}
+
+@media (min-width: 1000px) {
+    .body{
+        display: flex;
+        justify-content: center;
+    }
+
+    .contacto {
+        width: 900px;
+    }
+  }
+  
+
 .etiqueta{
     color: rgb(232, 178, 209);
-    font-family: Montserrat, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', Geneva, Verdana, sans-serif;
 }
 
 .titulo {
     background-color: #58032d;
     color: white;
-    font-family: Montserrat, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-weight: 500;
     font-size: 35px;
     height: 55px;

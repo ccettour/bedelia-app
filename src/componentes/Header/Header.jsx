@@ -13,7 +13,7 @@ export function Header() {
   return (
     <BrowserRouter>
     <>
-      <Navbar collapseOnSelect expand='lg' bg="dark" data-bs-theme="dark">
+      <Navbar collapseOnSelect expand='md' bg="dark" data-bs-theme="dark">
         <Container>
           <Navbar.Brand href="/"><img src={imgFCAD} />
           </Navbar.Brand>
