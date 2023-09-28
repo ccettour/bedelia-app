@@ -1,4 +1,4 @@
-import './Footer.css';
+import './footer.css';
 
 import imgEMAIL from './img/email.png';
 import imgFB from './img/facebook.png';

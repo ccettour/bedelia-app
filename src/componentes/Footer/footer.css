@@ -5,8 +5,11 @@ footer {
     bottom: 0px;
     width: 100%;
     height: 80px;
-
     justify-content: flex-end;
 
     background-color: #58032d;
+}
+
+img{
+    margin-left: 0.5rem;
 }

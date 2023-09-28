@@ -27,11 +27,11 @@ export function Contacto() {
     const enviarMensaje = async (e) => {
         e.preventDefault();
 
-        axios.post(baseURL, formData)
+        axios.post(baseURL/*, formData*/)
             .then(res => {
                 console.log(res);
-                alert(res.data.respuesta)
-                setFormData({ nombre: '', email: '', mensaje: '' })
+                //alert(res.data.respuesta)
+                //setFormData({ nombre: '', email: '', mensaje: '' })
             })
             .catch(error => {
                 console.log('error ', error);
@@ -64,7 +64,7 @@ export function Contacto() {
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="formEmail">
-                            <Form.Label column sm="2" className="etiqueta">Email</Form.Label>
+                            <Form.Label column sm="2" className="etiqueta">Email:</Form.Label>
                             <Col sm="10">
                                 <Form.Control
                                     type="email"
