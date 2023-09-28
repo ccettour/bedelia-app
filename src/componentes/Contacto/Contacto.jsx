@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import "./contacto.css";
 
 export function Contacto() {
-    const baseURL = 'http://localhost:3005/contacto';
+    const baseURL = 'http://localhost:3005';
 
     const [formData, setFormData] = useState({
         nombre: '',
@@ -27,11 +27,12 @@ export function Contacto() {
     const enviarMensaje = async (e) => {
         e.preventDefault();
 
-        axios.post(baseURL/*, formData*/)
+        axios.post(baseURL+'/contacto', formData)
             .then(res => {
                 console.log(res);
-                //alert(res.data.respuesta)
-                //setFormData({ nombre: '', email: '', mensaje: '' })
+                alert(res.data.respuesta)
+                //Para resetear los valores del formulario:
+                setFormData({ nombre: '', email: '', mensaje: '' })
             })
             .catch(error => {
                 console.log('error ', error);
@@ -56,9 +57,8 @@ export function Contacto() {
                                     type="text"
                                     placeholder="Ingrese su nombre"
                                     name="nombre"
-                                    value={formData.nombre}
+                                    value={formData.nombre} required
                                     onChange={handleInputChange}
-                                    required
                                 />
                             </Col>
                         </Form.Group>
@@ -70,9 +70,8 @@ export function Contacto() {
                                     type="email"
                                     placeholder="Ingrese su email"
                                     name="email"
-                                    value={formData.email}
+                                    value={formData.email} required
                                     onChange={handleInputChange}
-                                    required
                                 />
                             </Col>
                         </Form.Group>
@@ -84,9 +83,8 @@ export function Contacto() {
                                     as="textarea"
                                     placeholder="Ingrese su mensaje"
                                     name="mensaje"
-                                    value={formData.mensaje}
+                                    value={formData.mensaje} required
                                     onChange={handleInputChange}
-                                    required
                                 />
                             </Col>
                         </Form.Group>
