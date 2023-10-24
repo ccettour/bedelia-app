@@ -7,11 +7,9 @@ import { BrowserRouter, Route, Link, Routes } from 'react-router-dom';
 import { InformacionComponente } from '../Institucional/institucional';
 import { Contacto } from '../Contacto/Contacto';
 import { Inicio } from '../Inicio/Inicio';
-import { Crud } from '..Crud/Crud';
+import { Crud } from '../Crud/Crud';
+
 import imgFCAD from './img/fcad.jpeg';
-
-
-
 
 export function Header() {
   return (

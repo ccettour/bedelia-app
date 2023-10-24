@@ -8,7 +8,7 @@ import './crud.css' ;
 
 
 export function Crud() {
-    const baseURL = 'http://localhost:3005';
+    const baseURL = 'http://localhost:3005/api/v1/';
 
     // objeto para almacenar la información del formulario
     const [formulario, setFormulario] = 
@@ -22,7 +22,7 @@ export function Crud() {
     },[]); 
 
     const buscarEstudiantes = async () =>{
-        axios.get(baseURL + '/api/v1/estudiante/estudiantes')
+        axios.get(baseURL + 'estudiante/estudiantes')
         .then (res => {
             console.log(res);
             setDatos(res.data.dato);
@@ -33,7 +33,7 @@ export function Crud() {
     }
 
     const eliminarEstudiante = async (idEstudiante) =>{
-        axios.delete(baseURL + 'estudiante/estudiantes/' + idEstudiante)
+        axios.delete(baseURL + 'estudiante/estudiantes' + idEstudiante)
         .then( res => {            
             buscarEstudiantes();
         })
@@ -45,7 +45,7 @@ export function Crud() {
     const enviarInformacion = async(e)=>{
         e.preventDefault();
 
-        axios.post(baseURL + 'estudiante/estudiantes', formulario )
+        axios.post(baseURL + '/api/v1/estudiante/estudiantes', formulario )
         .then( res => {
             console.log(res);
             if(res.data.estado === 'OK'){

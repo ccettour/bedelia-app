@@ -1,3 +1,8 @@
+.body{
+    background-color: rgb(48,48,48);
+    font-family: Montserrat, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', Verdana, Geneva, sans-serif;
+}
+
 .miThead{
     background-color: #075791 !important;    
     color: white !important;
