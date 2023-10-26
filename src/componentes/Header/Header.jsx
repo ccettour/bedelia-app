@@ -10,9 +10,6 @@ import { Inicio } from '../Inicio/Inicio';
 import { Crud } from '../Crud/Crud';
 import imgFCAD from './img/fcad.jpeg';
 
-
-
-
 export function Header() {
   return (
     <BrowserRouter>
