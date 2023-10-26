@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import "./contacto.css";
 
 export function Contacto() {
-    const baseURL = 'http://localhost:3005';
+    const baseURL = 'http://localhost:3005/api/v1/publico';
 
     const [formData, setFormData] = useState({
         nombre: '',
