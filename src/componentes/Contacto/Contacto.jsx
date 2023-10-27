@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import "./contacto.css";
 
 export function Contacto() {
-    const baseURL = 'http://localhost:3005/api/v1/publico';
+    const baseURL = 'http://localhost:3005';
 
     const [formData, setFormData] = useState({
         nombre: '',
@@ -27,7 +27,7 @@ export function Contacto() {
     const enviarMensaje = async (e) => {
         e.preventDefault();
 
-        axios.post(baseURL+'/contacto', formData)
+        axios.post(baseURL+'/api/v1/publico/contacto', formData)
             .then(res => {
                 console.log(res);
                 alert(res.data.respuesta)

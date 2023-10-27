@@ -1,18 +1,28 @@
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../UserContext/UserContext';
+import { useContext } from 'react';
+
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/Button';
 
-import { BrowserRouter, Route, Link, Routes } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { ProtectedElement } from '../ProtectedElement/ProtectedElement';
 
-import { Institucional } from '../Institucional/Institucional';
-import { Contacto } from '../Contacto/Contacto';
-import { Inicio } from '../Inicio/Inicio';
-import { Crud } from '../Crud/Crud';
 import imgFCAD from './img/fcad.jpeg';
 
+
+
 export function Header() {
+  const { userData, setUserData } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const toLogin = () => {
+    navigate('/login');
+  }
+
   return (
-    <BrowserRouter>
     <>
       <Navbar collapseOnSelect expand='md' bg="dark" data-bs-theme="dark">
         <Container>
@@ -23,18 +33,12 @@ export function Header() {
             <Nav className="me-auto">            
               <Nav.Link as={Link} to='/institucional'>Institucional</Nav.Link>
               <Nav.Link as={Link} to='/contacto'>Contacto</Nav.Link>
-              <Nav.Link as={Link} to='/Crud'>Crud</Nav.Link>
+              <Nav.Link as={Link} to='/crud'>Crud</Nav.Link>
             </Nav>
+            <Button className='btn btn-light end-button' onClick={toLogin}>Iniciar Sesión</Button>
           </Navbar.Collapse>
         </Container>
       </Navbar>
     </>
-    <Routes>
-      <Route path='institucional' element={<Institucional/>}></Route>
-      <Route path='contacto' element={<Contacto/>}></Route>
-      <Route path='Crud' element={<Crud/>}></Route>
-      <Route path='/' element={<Inicio/>}></Route>
-    </Routes>
-    </BrowserRouter>
   );
 }
