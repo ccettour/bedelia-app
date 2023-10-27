@@ -1,0 +1,43 @@
+.titulo {
+  background-color: #58032d;
+  color: white;
+  font-weight: 500;
+  font-size: 35px;
+  height: 55px;
+  line-height: 80px;
+  display: block;
+  text-align: center;
+  margin: auto;
+  padding: 0.5rem;
+}
+
+.login-container {
+  background-color: rgb(48,48,48);
+  font-family: Montserrat, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', Verdana, Geneva, sans-serif;
+  }
+  
+.login-form {
+  height: 100vh;
+  padding: 80px 10vw;
+}
+
+@media (min-width: 1000px) {
+  .login-container{
+      display: flex;
+      justify-content: center;
+  }
+
+  .login-form {
+      width: 900px;
+  }
+}
+
+
+.etiqueta{
+  color: rgb(232, 178, 209);
+}
+
+.btnDiv{
+  display: flex;
+  justify-content: flex-end;
+}

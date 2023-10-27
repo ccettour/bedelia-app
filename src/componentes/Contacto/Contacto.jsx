@@ -27,7 +27,7 @@ export function Contacto() {
     const enviarMensaje = async (e) => {
         e.preventDefault();
 
-        axios.post(baseURL+'/contacto', formData)
+        axios.post(baseURL+'/api/v1/publico/contacto', formData)
             .then(res => {
                 console.log(res);
                 alert(res.data.respuesta)

@@ -53,11 +53,6 @@ export function Crud() {
                 buscarEstudiantes();
                 setFormulario({dni:'',nombre:'', apellido:'', nacionalidad:'', correoElectronico:'', fechaNacimiento:''});
             } 
-
-            // if(resp.status === 201){
-            //     alert(resp.data.msj);
-            //     buscarEstudiantes();
-            // }
         })
         .catch(error => {
             console.log(error)

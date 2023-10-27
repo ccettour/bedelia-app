@@ -6,7 +6,7 @@ import carr2 from "./img/carr2.jpeg";
 import carr3 from "./img/carr3.jpeg";
 import carr4 from "./img/carr4.png";
 
-export function InformacionComponente() {
+export function Institucional() {
   return (
     <div className="container-fluid institucional">
       <h2 className="title-parrafo">Historia - FCAD UNER</h2>
