@@ -4,11 +4,10 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import { BrowserRouter, Route, Link, Routes } from 'react-router-dom';
 
-import { InformacionComponente } from '../Institucional/institucional';
+import { InformacionComponente } from '../Institucional/Institucional';
 import { Contacto } from '../Contacto/Contacto';
 import { Inicio } from '../Inicio/Inicio';
-import { Crud } from '../Crud/Crud';
-
+import { Crud } from '../Crud/crud';
 import imgFCAD from './img/fcad.jpeg';
 
 export function Header() {
@@ -17,7 +16,7 @@ export function Header() {
     <>
       <Navbar collapseOnSelect expand='md' bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="/"><img src={imgFCAD} />
+          <Navbar.Brand href="/"><img src={imgFCAD} alt='logo' />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='algo'/>
           <Navbar.Collapse id='algo'>
