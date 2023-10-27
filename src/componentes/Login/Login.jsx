@@ -26,9 +26,10 @@ export function Login() {
                     // también seteo el token para utilizarlo en las consultas al back
                     setUserData({ user: res.data.usuario, token: res.data.token });
                     navigate("/privado/dashboard");
-                } /*else {
-                    alert("Correo y/o contraseña incorrecto"); ??
-                }*/
+                } else if (res.status === 200) {
+                    alert("Usuario y/o contraseña incorrectos");
+                }
+
             })
             .catch(error => {
                 console.log(error);

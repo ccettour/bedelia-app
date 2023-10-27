@@ -16,11 +16,16 @@ const Dashboard = () => {
         navigate(`/privado/crud`);        
     };
 
+    const irACarreras = () => {
+        navigate(`/privado/carreras`);        
+    };
+
     return (userData.user ?
         <>
         <div className='container mt-3 mb-1 mb-5'>
             <h1>Bienvenido {userData.user.nombre}!</h1>
             
+            {/* Para BEDEL */}
             <ProtectedElement mustBeBedel={true}>
                 <div className='row'>
                     <div className="col-md-10">
@@ -31,6 +36,18 @@ const Dashboard = () => {
                     </div>
                 </div>
             </ProtectedElement>
+            <ProtectedElement mustBeBedel={true}>
+                <div className='row'>
+                    <div className="col-md-10">
+                        <h3>Carreras</h3>
+                    </div>
+                    <div className="col-md-2">
+                        <Button variant="light" onClick={irACarreras}>Ver</Button>
+                    </div>
+                </div>
+            </ProtectedElement>
+
+            {/* Para DECANO */}
             <ProtectedElement mustBeDecano={true}>
                 <div className='row'>
                     <div className='container mt-3 mb-1 mb-5'>

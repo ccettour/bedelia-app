@@ -7,6 +7,7 @@ import { Footer } from './componentes/Footer/Footer';
 
 import { Contacto } from './componentes/Contacto/Contacto';
 import { Crud } from './componentes/Crud/Crud';
+import { Carrera } from './componentes/Carrera/Carrera';
 import { Dashboard } from './componentes/Dashboard/Dashboard';
 import { Inicio } from './componentes/Inicio/Inicio';
 import { Institucional } from './componentes/Institucional/Institucional';
@@ -28,21 +29,28 @@ function App() {
             <Route path='/institucional' element={<Institucional />} />
             <Route path='/contacto' element={<Contacto />} />
             <Route path='/crud' element={<Crud />} />
+            <Route path='/carreras' element={<Carrera />} />
             <Route path='/login' element={<Login />} />
 
+            {/* Ruta protegida para usuarios logueados como DECANO o BEDEL */}
             <Route path='/privado/dashboard'
               element={
-                // ruta protegida para usuarios logueados, presidente o entrendor
-                <ProtectedRoute mustBeEntrenador={false}>
+                <ProtectedRoute mustBeBedel={false}>
                   {<Dashboard />}
                 </ProtectedRoute>
               } />
 
+            {/* Ruta protegida para usuarios logueados como BEDEL */}
             <Route path='/privado/crud'
               element={
-                // ruta protegida para usuarios logueados de tipo entrenador
-                <ProtectedRoute mustBeEntrenador={false}>
+                <ProtectedRoute mustBeBedel={true}>
                   {<Crud />}
+                </ProtectedRoute>
+              } />
+            <Route path='/privado/carreras'
+              element={
+                <ProtectedRoute mustBeBedel={true}>
+                  {<Carrera />}
                 </ProtectedRoute>
               } />
           </Routes>
