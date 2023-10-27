@@ -12,8 +12,6 @@ import { ProtectedElement } from '../ProtectedElement/ProtectedElement';
 
 import imgFCAD from './img/fcad.jpeg';
 
-
-
 export function Header() {
   const { userData, setUserData } = useContext(UserContext);
   const navigate = useNavigate();
