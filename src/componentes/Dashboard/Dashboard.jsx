@@ -13,7 +13,7 @@ const Dashboard = () => {
     const { userData, setUserData } = useContext(UserContext);
 
     const irAEstudiantes = () => {
-        navigate(`/privado/crud`);        
+        navigate(`/privado/estudiante`);        
     };
 
     const irACarreras = () => {

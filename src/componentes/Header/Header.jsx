@@ -31,7 +31,7 @@ export function Header() {
             <Nav className="me-auto">            
               <Nav.Link as={Link} to='/institucional'>Institucional</Nav.Link>
               <Nav.Link as={Link} to='/contacto'>Contacto</Nav.Link>
-              <Nav.Link as={Link} to='/crud'>Crud</Nav.Link>
+              <Nav.Link as={Link} to='/estudiante'>Estudiante</Nav.Link>
             </Nav>
             <Button className='btn btn-light end-button' onClick={toLogin}>Iniciar Sesión</Button>
           </Navbar.Collapse>
