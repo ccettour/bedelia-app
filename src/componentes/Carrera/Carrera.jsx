@@ -8,7 +8,7 @@ import './carrera.css';
 
 
 export function Carrera() {
-    const baseURL = 'http://localhost:3005';
+    const baseURL = 'http://localhost:3005/api/v1';
 
     const [showModal, setShowModal] = useState(false);
 
@@ -29,7 +29,7 @@ export function Carrera() {
     }, []);
 
     const buscarCarreras = async () => {
-        axios.get(baseURL + '/api/v1/carrera/carreras')
+        axios.get(baseURL + '/carrera/carreras')
             .then(res => {
                 console.log(res);
                 setDatos(res.data.dato);
@@ -40,7 +40,7 @@ export function Carrera() {
     }
 
     const eliminarCarrera = async (idCarrera) => {
-        axios.delete(baseURL + 'carrera/carreras/' + idCarrera)
+        axios.delete(baseURL + '/carrera/carreras/' + idCarrera)
             .then(res => {
                 buscarCarreras();
             })
@@ -52,10 +52,11 @@ export function Carrera() {
     const crearCarrera = async (e) => {
         e.preventDefault();
 
-        axios.post(baseURL + '/api/v1/carrera/carreras', carrera)
+        axios.post(baseURL + '/carrera/carreras', carrera)
             .then(res => {
                 if (res.data.estado === 'OK') {
                     alert(res.data.msj);
+                    
                     cerrarModal();
                     buscarCarreras();
                 }
@@ -82,7 +83,7 @@ export function Carrera() {
                     <Table striped bordered hover >
                         <thead >
                             <tr>
-                                <th className='tabla-thead'>Nro. Materia</th>
+                                <th className='tabla-thead'>Nro. Carrera</th>
                                 <th className='tabla-thead'>Nombre</th>
                                 <th className='tabla-thead'>Modalidad</th>
                                 <th className='tabla-thead'>Acciones</th>
