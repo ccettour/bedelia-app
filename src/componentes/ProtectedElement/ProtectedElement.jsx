@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { UserContext } from '../UserContext/UserContext';
 
-const ProtectedElement = ({mustBeBedel,mustBeDecano, children }) => {
+const ProtectedElement = ({mustBeBedel, mustBeDecano, children }) => {
 
     const { isLoggedIn, esBedel, esDecano } = useContext(UserContext);
 

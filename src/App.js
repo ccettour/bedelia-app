@@ -20,14 +20,12 @@ function App() {
   return (
     <div className="appStyle">
       <BrowserRouter>
+        <Header />
         <UserProvider>
-          <Header />
           <Routes>
             <Route path="/" element={<Inicio />} />
             <Route path="/institucional" element={<Institucional />} />
             <Route path="/contacto" element={<Contacto />} />
-            <Route path="/estudiante" element={<Estudiante />} />
-            <Route path="/carreras" element={<Carrera />} />
             <Route path="/login" element={<Login />} />
 
             {/* Ruta protegida para usuarios logueados como DECANO o BEDEL */}

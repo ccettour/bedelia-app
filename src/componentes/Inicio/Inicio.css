@@ -116,6 +116,7 @@ button.btn-light {
     color: rgb(232, 178, 209);
     border: 2px solid rgb(232, 178, 209);
     background-color: transparent;
+    margin-right: 5px;
 }
 
 button.btn-light:hover {

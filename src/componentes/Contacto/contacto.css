@@ -42,24 +42,3 @@
     justify-content: flex-end;
 }
 
-button.btn-light {
-    color: rgb(232, 178, 209);
-    border-color: rgb(232, 178, 209);
-    background-color: transparent;
-}
-
-button.btn-light:hover {
-    color: rgb(48, 48, 48);
-    border-color: rgb(232, 178, 209);
-    background-color: rgb(232, 178, 209);
-}
-
-button.btn-accion {
-    background-size: cover;
-    background-color: transparent;
-    width: 30px;
-    height: 30px;
-    border: none;
-    cursor: pointer;
-    margin: 3px 10px;
-}

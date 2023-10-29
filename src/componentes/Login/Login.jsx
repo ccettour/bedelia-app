@@ -26,7 +26,8 @@ export function Login() {
                     // también seteo el token para utilizarlo en las consultas al back
                     setUserData({ user: res.data.usuario, token: res.data.token });
                     navigate("/privado/dashboard");
-                } else if (res.status === 200) {
+                } else if (res.status === 400) {
+                    //Ver por qué no funciona y agregar un aviso con el sweet que comenta Cristian en la clase del 10/10
                     alert("Usuario y/o contraseña incorrectos");
                 }
 

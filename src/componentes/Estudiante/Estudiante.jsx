@@ -1,13 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-
 import axios from "axios";
-
 import { Button, Table, Form, Card, InputGroup } from "react-bootstrap";
 
 import "./estudiante.css";
 
 export function Estudiante() {
   const baseURL = "http://localhost:3005/api/v1/";
+  const navigate = useNavigate();
 
   // objeto para almacenar la información del formulario
   const [formulario, setFormulario] = useState({
@@ -30,7 +30,7 @@ export function Estudiante() {
     axios
       .get(baseURL + "estudiante/estudiantes")
       .then((res) => {
-        console.log(res);
+        console.log(res.data.dato);
         setDatos(res.data.dato);
       })
       .catch((error) => {
@@ -74,13 +74,22 @@ export function Estudiante() {
       });
   };
 
+  const dashboard = () => {
+    navigate("/privado/dashboard");
+  };
+
   return (
     <>
       <div className="titulo">
         <h2>ESTUDIANTES</h2>
       </div>
 
-      <div className="container mt-4 mb-2">
+      <div className="container mt-3 mb-2">
+        <div className="btnDiv">
+          <Button variant="light" onClick={dashboard}>
+            Volver
+          </Button>
+        </div>
         <Card className="mt-3 mb-3">
           <Card.Body>
             <Form onSubmit={(e) => enviarInformacion(e)}>
@@ -251,7 +260,7 @@ export function Estudiante() {
                 </tr>
               ))
             ) : (
-              <tr>{/* TAREA: un mensaje o similar  */}</tr>
+              <td colSpan={7}>No hay estudiantes para mostrar</td>
             )}
           </tbody>
         </Table>

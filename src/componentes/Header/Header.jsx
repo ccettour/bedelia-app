@@ -29,9 +29,9 @@ export function Header() {
           <Navbar.Toggle aria-controls='algo'/>
           <Navbar.Collapse id='algo'>
             <Nav className="me-auto">            
-              <Nav.Link as={Link} to='/institucional'>Institucional</Nav.Link>
-              <Nav.Link as={Link} to='/contacto'>Contacto</Nav.Link>
-              <Nav.Link as={Link} to='/estudiante'>Estudiante</Nav.Link>
+              <Nav.Link as={ Link } to='/institucional'>Institucional</Nav.Link>
+              <Nav.Link as={ Link } to='/contacto'>Contacto</Nav.Link>
+              <Nav.Link as={ Link } to='/estudiante'>Estudiante</Nav.Link>
             </Nav>
             <Button className='btn btn-light end-button' onClick={toLogin}>Iniciar Sesión</Button>
           </Navbar.Collapse>
