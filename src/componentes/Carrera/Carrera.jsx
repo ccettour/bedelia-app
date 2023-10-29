@@ -1,13 +1,22 @@
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-import { Button, Table, Form, Modal } from "react-bootstrap";
+import Swal from "sweetalert2";
+import {
+  Button,
+  Table,
+  Form,
+  Modal,
+  Container,
+  Col,
+  Row,
+} from "react-bootstrap";
 
 import "./carrera.css";
 
 export function Carrera() {
   const baseURL = "http://localhost:3005/api/v1";
+  const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
 
@@ -57,7 +66,14 @@ export function Carrera() {
       .post(baseURL + "/carrera/carreras", carrera)
       .then((res) => {
         if (res.data.estado === "OK") {
-          alert(res.data.msj);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: res.data.msj,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          //alert(res.data.msj);
 
           cerrarModal();
           buscarCarreras();
@@ -73,11 +89,66 @@ export function Carrera() {
       .get(baseURL + "/carrera/inscriptos/" + idCarrera)
       .then((res) => {
         setInscriptos(res.data.dato);
+        setModalShow(true);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  const dashboard = () => {
+    navigate("/privado/dashboard");
+  };
+
+  function MydModalWithGrid(props) {
+    return (
+      <Modal {...props} aria-labelledby="contained-modal-title-vcenter" size="lg">
+        
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Alumnos inscriptos
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="grid-example">
+          <Container>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th className="tabla-thead">Legajo</th>
+                  <th className="tabla-thead">DNI</th>
+                  <th className="tabla-thead">Nombre</th>
+                  <th className="tabla-thead">Apellido</th>
+                  <th className="tabla-thead">Correo Electrónico</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inscriptos ? (
+                  inscriptos.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.idEstudiante}</td>
+                      <td>{item.dni}</td>
+                      <td>{item.nombre}</td>
+                      <td>{item.apellido}</td>
+                      <td>{item.correoElectronico}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5}>No hay estudiantes inscriptos</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  const [modalShow, setModalShow] = useState(false);
 
   return (
     <>
@@ -86,10 +157,12 @@ export function Carrera() {
       </div>
 
       <div className="container mt-3">
-        
         <div className="btnDiv">
           <Button variant="light" onClick={verModal}>
             Crear carrera
+          </Button>
+          <Button variant="light" onClick={dashboard}>
+            Volver
           </Button>
         </div>
 
@@ -116,7 +189,8 @@ export function Carrera() {
                     <td>{item.modalidad}</td>
                     <td>
                       <Button
-                        variant="light"
+                        variant="primary"
+                        className="miBoton"
                         onClick={() => mostrarInscriptos(item.idCarrera)}
                       >
                         Ver inscriptos
@@ -142,40 +216,8 @@ export function Carrera() {
           </Table>
         </div>
 
-        <div className="item">
-          <h2>Alumnos inscriptos</h2>
-        </div>
+        <MydModalWithGrid show={modalShow} onHide={() => setModalShow(false)} />
 
-        <div className="container mt-3 mb-5 miTabla">
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th className="tabla-thead">Legajo</th>
-                <th className="tabla-thead">DNI</th>
-                <th className="tabla-thead">Nombre</th>
-                <th className="tabla-thead">Apellido</th>
-                <th className="tabla-thead">Correo Electrónico</th>
-              </tr>
-            </thead>
-            <tbody>
-              {inscriptos ? (
-                inscriptos.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.idEstudiante}</td>
-                    <td>{item.dni}</td>
-                    <td>{item.nombre}</td>
-                    <td>{item.apellido}</td>
-                    <td>{item.correoElectronico}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5}></td>
-                </tr>
-              )}
-            </tbody>
-          </Table>
-        </div>
         <Modal show={showModal} onHide={cerrarModal}>
           <Modal.Header closeButton>
             <Modal.Title>Crear carrera</Modal.Title>
