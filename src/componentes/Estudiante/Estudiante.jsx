@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { Button, Table, Form, Card, InputGroup } from "react-bootstrap";
 
 import "./estudiante.css";
@@ -90,6 +91,8 @@ export function Estudiante() {
             Volver
           </Button>
         </div>
+
+
         <Card className="mt-3 mb-3">
           <Card.Body>
             <Form onSubmit={(e) => enviarInformacion(e)}>
@@ -169,7 +172,7 @@ export function Estudiante() {
                   >
                     <Form.Label>Correo Electrónico</Form.Label>
                     <Form.Control
-                      type="text"
+                      type="email"
                       onChange={(e) =>
                         setFormulario({
                           ...formulario,
