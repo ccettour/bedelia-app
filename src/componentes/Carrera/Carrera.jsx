@@ -19,6 +19,7 @@ export function Carrera() {
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   //Manejo del modal
   const verModal = () => setShowModal(true);
@@ -26,6 +27,11 @@ export function Carrera() {
 
   // objeto para almacenar la información del formulario
   const [carrera, setCarrera] = useState({ nombre: "", modalidad: "" });
+
+
+  //Estado para el modo edicion
+  const [editMode, setEditMode] = useState(false);
+
 
   // datos de carrera
   const [datos, setDatos] = useState(null);
@@ -96,6 +102,35 @@ export function Carrera() {
       });
   };
 
+
+  const editarCarrera = (carrera) => {
+    setEditMode(true);
+    setCarrera(carrera);
+    setShowEditModal(true);
+
+  };
+
+  const actualizarCarrera = async () => {
+    try {
+      const response = await axios.put(baseURL + "/carrera/carreras/" + carrera.idCarrera, carrera);
+      if (response.data.estado === "OK") {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: response.data.msj,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+  
+        setShowEditModal(false);
+        setEditMode(false);
+        buscarCarreras();
+      }
+    } catch (error) {
+      console.error("Error al actualizar carrera:", error);
+    }
+  };
+
   const dashboard = () => {
     navigate("/privado/dashboard");
   };
@@ -150,6 +185,15 @@ export function Carrera() {
 
   const [modalShow, setModalShow] = useState(false);
 
+
+///Funcion de actualizar///
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+
+
   return (
     <>
       <div className="titulo">
@@ -195,9 +239,11 @@ export function Carrera() {
                       >
                         Ver inscriptos
                       </Button>
-                      <Button variant="success" className="miBoton">
+
+                      <Button variant="success" className="miBoton" onClick={handleShow}>
                         Editar
                       </Button>
+                        
                       <Button
                         variant="danger"
                         onClick={() => eliminarCarrera(item.idCarrera)}
@@ -248,8 +294,8 @@ export function Carrera() {
                       }
                     >
                       <option value="">Seleccionar...</option>
-                      <option value="0">Presencial</option>
-                      <option value="1">Virtual</option>
+                      <option value="0">presencial</option>
+                      <option value="1">virtual</option>
                     </Form.Select>
                   </Form.Group>
                 </div>
@@ -260,6 +306,54 @@ export function Carrera() {
             </Form>
           </Modal.Body>
         </Modal>
+
+        {/* Actualizacion */}
+
+        <Button variant="primary" onClick={handleShow}>
+        Launch demo modal
+      </Button>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Datos nuevo de la carrera</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Nombre de la carrera</Form.Label>
+              <Form.Control
+                type= "text"
+                placeholder="text"
+                autoFocus
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Modalidad de la carrera</Form.Label>
+              <Form.Select
+                      onChange={(e) =>
+                        setCarrera({ ...carrera, modalidad: e.target.value })
+                      }
+                    >
+                      <option value="">Seleccionar...</option>
+                      <option value="0">presencial</option>
+                      <option value="1">virtual</option>
+                    </Form.Select>
+
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cerrar
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Actualizar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+
       </div>
     </>
   );
