@@ -6,6 +6,7 @@ import { Footer } from "./componentes/Footer/Footer";
 
 import { Contacto } from "./componentes/Contacto/Contacto";
 import { Estudiante } from "./componentes/Estudiante/Estudiante";
+import { EstudianteCarrera } from "./componentes/EstudianteCarrera/EstudianteCarrera";
 import { Carrera } from "./componentes/Carrera/Carrera";
 import { Dashboard } from "./componentes/Dashboard/Dashboard";
 import { Inicio } from "./componentes/Inicio/Inicio";
@@ -52,6 +53,14 @@ function App() {
               element={
                 <ProtectedRoute mustBeBedel={true}>
                   {<Carrera />}
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/privado/estudianteCarrera"
+              element={
+                <ProtectedRoute mustBeBedel={true}>
+                  {<EstudianteCarrera />}
                 </ProtectedRoute>
               }
             />

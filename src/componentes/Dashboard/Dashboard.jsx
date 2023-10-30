@@ -20,6 +20,10 @@ const Dashboard = () => {
         navigate(`/privado/carreras`);        
     };
 
+    const irAEstudianteCarrera = () => {
+        navigate(`/privado/estudianteCarrera`);
+    };
+
     return (userData.user ?
         <>
         <div className='container mt-3 mb-1 mb-5'>
@@ -43,6 +47,16 @@ const Dashboard = () => {
                     </div>
                     <div className="col-md-2">
                         <Button variant="light" onClick={irACarreras}>Ver</Button>
+                    </div>
+                </div>
+            </ProtectedElement>
+            <ProtectedElement mustBeBedel={true}>
+                <div className='row'>
+                    <div className="col-md-10">
+                        <h3>Inscripción a carreras</h3>
+                    </div>
+                    <div className="col-md-2">
+                        <Button variant="light" onClick={irAEstudianteCarrera}>Ver</Button>
                     </div>
                 </div>
             </ProtectedElement>
