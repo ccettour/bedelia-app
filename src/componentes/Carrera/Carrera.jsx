@@ -26,7 +26,7 @@ export function Carrera() {
   const cerrarModal = () => setShowModal(false);
 
   // objeto para almacenar la información del formulario
-  const [carrera, setCarrera] = useState({ nombre: "", modalidad: "" });
+  const [carrera, setCarrera] = useState({ idCarrera:"", nombre: "", modalidad: "" });
 
 
   //Estado para el modo edicion
@@ -103,16 +103,16 @@ export function Carrera() {
   };
 
 
-  const editarCarrera = (carrera) => {
+   const editarCarrera = (carrera) => {
     setEditMode(true);
     setCarrera(carrera);
     setShowEditModal(true);
 
-  };
+  }; 
 
   const actualizarCarrera = async () => {
     try {
-      const response = await axios.put(baseURL + "/carrera/carreras/" + carrera.idCarrera, carrera);
+      const response = await axios.put(baseURL + "/carrera/carreras", carrera);
       if (response.data.estado === "OK") {
         Swal.fire({
           position: "top-end",
@@ -121,9 +121,10 @@ export function Carrera() {
           showConfirmButton: false,
           timer: 1500,
         });
-  
+        editarCarrera();
         setShowEditModal(false);
-        setEditMode(false);
+        setShow(false);
+        setEditMode(false); 
         buscarCarreras();
       }
     } catch (error) {
@@ -189,8 +190,15 @@ export function Carrera() {
 ///Funcion de actualizar///
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setCarrera({idCarrera:"", nombre:"", modalidad:""});
+    setEditMode(false);
+    setShow(false);
+  };
+  const handleShow = (carrera) => {
+    setCarrera(carrera)
+    setShow(true);
+  };
 
 
 
@@ -240,7 +248,7 @@ export function Carrera() {
                         Ver inscriptos
                       </Button>
 
-                      <Button variant="success" className="miBoton" onClick={handleShow}>
+                      <Button variant="success" className="miBoton" onClick={()=> handleShow(item)}>
                         Editar
                       </Button>
                         
@@ -308,11 +316,6 @@ export function Carrera() {
         </Modal>
 
         {/* Actualizacion */}
-
-        <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Datos nuevo de la carrera</Modal.Title>
@@ -320,13 +323,29 @@ export function Carrera() {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Nombre de la carrera</Form.Label>
-              <Form.Control
-                type= "text"
-                placeholder="text"
-                autoFocus
+
+            <Form.Label>ID  de la Carrera</Form.Label>
+            <Form.Control
+                type="text"
+                placeholder="Nombre"
+                value = {carrera.idCarrera}
+                onChange={(e) => 
+                      setCarrera({...carrera,idCarrera: e.target.value})}
               />
+
+
+              <Form.Label>Carrera</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Nombre"
+                value = {carrera.nombre}
+                onChange={(e) => 
+                      setCarrera({...carrera,nombre: e.target.value})}
+              />
+
             </Form.Group>
+
+          
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Modalidad de la carrera</Form.Label>
               <Form.Select
@@ -346,7 +365,7 @@ export function Carrera() {
           <Button variant="secondary" onClick={handleClose}>
             Cerrar
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={actualizarCarrera}>
             Actualizar
           </Button>
         </Modal.Footer>
