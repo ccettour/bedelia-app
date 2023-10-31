@@ -21,6 +21,9 @@ export function EstudianteCarrera() {
   // datos de inscripción a carrera
   const [datos, setDatos] = useState(null);
 
+  const [carrerasInscripto, setCarrerasInscripto] = useState(null);
+  const [carrerasNoInscripto, setCarrerasNoInscripto] = useState(null);
+
   useEffect(() => {
     buscarEstudiantes();
   }, []);
@@ -37,12 +40,13 @@ export function EstudianteCarrera() {
       });
   };
 
-  const buscarCarreras = async () => {
+  const buscarCarrerasInscripto = async (idEstudiante) => {
     axios
-      .get(baseURL + "/carrera/carreras")
+      .get(baseURL + "estudianteCarrera/carrerasInscripto/" + idEstudiante)
       .then((res) => {
         console.log(res);
-        setDatos(res.data.dato);
+        setCarrerasInscripto(res.data.dato);
+
       })
       .catch((error) => {
         console.log(error);
@@ -144,6 +148,8 @@ export function EstudianteCarrera() {
           </tbody>
         </Table>
       </div>
+
+      
     </>
   );
 }
