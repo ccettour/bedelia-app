@@ -324,15 +324,6 @@ export function Carrera() {
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 
-            <Form.Label>ID  de la Carrera</Form.Label>
-            <Form.Control
-                type="text"
-                placeholder="Nombre"
-                value = {carrera.idCarrera}
-                onChange={(e) => 
-                      setCarrera({...carrera,idCarrera: e.target.value})}
-              />
-
 
               <Form.Label>Carrera</Form.Label>
               <Form.Control
