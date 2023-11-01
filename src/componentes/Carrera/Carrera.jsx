@@ -7,9 +7,7 @@ import {
   Table,
   Form,
   Modal,
-  Container,
-  Col,
-  Row,
+  Container
 } from "react-bootstrap";
 
 import "./carrera.css";
@@ -79,7 +77,6 @@ export function Carrera() {
             showConfirmButton: false,
             timer: 1500,
           });
-          //alert(res.data.msj);
 
           cerrarModal();
           buscarCarreras();
@@ -92,7 +89,7 @@ export function Carrera() {
 
   const mostrarInscriptos = async (idCarrera) => {
     axios
-      .get(baseURL + "/carrera/inscriptos/" + idCarrera)
+      .get(baseURL + "/estudianteCarrera/estudianteCarrera/" + idCarrera)
       .then((res) => {
         setInscriptos(res.data.dato);
         setModalShow(true);
@@ -136,7 +133,7 @@ export function Carrera() {
     navigate("/privado/dashboard");
   };
 
-  function MydModalWithGrid(props) {
+  function VerAlumnosInscriptos(props) {
     return (
       <Modal {...props} aria-labelledby="contained-modal-title-vcenter" size="lg">
         
@@ -270,7 +267,7 @@ export function Carrera() {
           </Table>
         </div>
 
-        <MydModalWithGrid show={modalShow} onHide={() => setModalShow(false)} />
+        <VerAlumnosInscriptos show={modalShow} onHide={() => setModalShow(false)} />
 
         <Modal show={showModal} onHide={cerrarModal}>
           <Modal.Header closeButton>

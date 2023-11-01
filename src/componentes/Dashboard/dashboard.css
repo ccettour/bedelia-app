@@ -1,0 +1,19 @@
+.cardEstadistica{
+    background-color: #94326b !important;
+    border: 2px solid #ccc !important;
+    border-radius: 10px;
+    padding: 10px;
+    margin:5px;
+}
+
+.cardEstadistica:hover{
+    box-shadow: 0 0 10px 5px #ccc;
+}
+
+.titleEstadistica{
+    color: rgb(232, 178, 209) !important;
+}
+
+.textEstadistica{
+    color: #ccc !important;
+}

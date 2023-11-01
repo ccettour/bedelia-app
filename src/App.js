@@ -7,6 +7,9 @@ import { Footer } from "./componentes/Footer/Footer";
 import { Contacto } from "./componentes/Contacto/Contacto";
 import { Estudiante } from "./componentes/Estudiante/Estudiante";
 import { Carrera } from "./componentes/Carrera/Carrera";
+import { Materia } from "./componentes/Materia/Materia";
+import { EstudianteCarrera } from "./componentes/EstudianteCarrera/EstudianteCarrera";
+import { EstudianteMateria } from "./componentes/EstudianteMateria/EstudianteMateria";
 import { Dashboard } from "./componentes/Dashboard/Dashboard";
 import { Inicio } from "./componentes/Inicio/Inicio";
 import { Institucional } from "./componentes/Institucional/Institucional";
@@ -52,6 +55,30 @@ function App() {
               element={
                 <ProtectedRoute mustBeBedel={true}>
                   {<Carrera />}
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/privado/materias"
+              element={
+                <ProtectedRoute mustBeBedel={true}>
+                  {<Materia />}
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/privado/estudianteCarrera"
+              element={
+                <ProtectedRoute mustBeBedel={true}>
+                  {<EstudianteCarrera />}
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/privado/estudianteMateria"
+              element={
+                <ProtectedRoute mustBeBedel={true}>
+                  {<EstudianteMateria />}
                 </ProtectedRoute>
               }
             />
