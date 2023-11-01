@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-// import { Link } from 'react-router-dom';
 import { UserContext } from '../UserContext/UserContext';
 import { ProtectedElement } from '../ProtectedElement/ProtectedElement';
 
 import { Button } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
+
+import './dashboard.css';
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -20,14 +21,22 @@ const Dashboard = () => {
         navigate(`/privado/carreras`);        
     };
 
+    const irAMaterias = () => {
+        navigate(`/privado/materias`);        
+    };
+
     const irAEstudianteCarrera = () => {
         navigate(`/privado/estudianteCarrera`);
+    };
+
+    const irAEstudianteMateria = () => {
+        navigate(`/privado/estudianteMateria`);
     };
 
     return (userData.user ?
         <>
         <div className='container mt-3 mb-1 mb-5'>
-            <h1>Bienvenido {userData.user.nombre}!</h1>
+            <h1>¡Bienvenide {userData.user.nombre}!</h1>
             
             {/* Para BEDEL */}
             <ProtectedElement mustBeBedel={true}>
@@ -53,10 +62,30 @@ const Dashboard = () => {
             <ProtectedElement mustBeBedel={true}>
                 <div className='row'>
                     <div className="col-md-10">
+                        <h3>Materias</h3>
+                    </div>
+                    <div className="col-md-2">
+                        <Button variant="light" onClick={irAMaterias}>Ver</Button>
+                    </div>
+                </div>
+            </ProtectedElement>
+            <ProtectedElement mustBeBedel={true}>
+                <div className='row'>
+                    <div className="col-md-10">
                         <h3>Inscripción a carreras</h3>
                     </div>
                     <div className="col-md-2">
                         <Button variant="light" onClick={irAEstudianteCarrera}>Ver</Button>
+                    </div>
+                </div>
+            </ProtectedElement>
+            <ProtectedElement mustBeBedel={true}>
+                <div className='row'>
+                    <div className="col-md-10">
+                        <h3>Inscripción a materias</h3>
+                    </div>
+                    <div className="col-md-2">
+                        <Button variant="light" onClick={irAEstudianteMateria}>Ver</Button>
                     </div>
                 </div>
             </ProtectedElement>
@@ -68,38 +97,38 @@ const Dashboard = () => {
                         <div className="col-md-12">
                             <div className='row'>
                                 <Col sm={6} md={4} lg={3}>
-                                    <Card bg='success'>
+                                    <Card className='cardEstadistica'>
                                         <Card.Body>
-                                            <Card.Title>Futbolistas Creados</Card.Title>
-                                            <Card.Subtitle className="mb-2 text-muted">Activos</Card.Subtitle>
-                                            <Card.Text><h3>100</h3></Card.Text>                                    
+                                            <Card.Title className='titleEstadistica'>Futbolistas Creados</Card.Title>
+                                            <Card.Subtitle className="mb-2 textEstadistica">Activos</Card.Subtitle>
+                                            <Card.Text className='textEstadistica'><h3>100</h3></Card.Text>                                    
                                         </Card.Body>
                                     </Card>
                                 </Col>
                                 <Col sm={6} md={4} lg={3}>
-                                    <Card bg='danger'>
+                                    <Card className='cardEstadistica'>
                                         <Card.Body>
-                                            <Card.Title>Lesionados</Card.Title>
-                                            <Card.Subtitle className="mb-2 text-muted">No llegan...</Card.Subtitle>
-                                            <Card.Text><h3>10</h3></Card.Text>                                    
+                                            <Card.Title className='titleEstadistica'>Lesionados</Card.Title>
+                                            <Card.Subtitle className="mb-2 textEstadistica">No llegan...</Card.Subtitle>
+                                            <Card.Text className='textEstadistica'><h3>10</h3></Card.Text>                                    
                                         </Card.Body>
                                     </Card>
                                 </Col>
                                 <Col sm={6} md={4} lg={3}>
-                                    <Card bg='info'>
+                                    <Card className='cardEstadistica'>
                                         <Card.Body>
-                                            <Card.Title>Convocatorias</Card.Title>
-                                            <Card.Subtitle className="mb-2 text-muted">Con 26 convocados</Card.Subtitle>
-                                            <Card.Text><h3>10</h3></Card.Text>                                    
+                                            <Card.Title className='titleEstadistica'>Convocatorias</Card.Title>
+                                            <Card.Subtitle className="mb-2 textEstadistica">Con 26 convocados</Card.Subtitle>
+                                            <Card.Text className='textEstadistica'><h3>10</h3></Card.Text>                                    
                                         </Card.Body>
                                     </Card>
                                 </Col>
                                 <Col sm={6} md={4} lg={3}>
-                                    <Card bg='info'>
+                                    <Card className='cardEstadistica'>
                                         <Card.Body>
-                                            <Card.Title>Próximo Partido</Card.Title>
-                                            <Card.Subtitle className="mb-2 text-muted">Córdoba</Card.Subtitle>
-                                            <Card.Text><h3>14/11/2023</h3></Card.Text>                                    
+                                            <Card.Title className='titleEstadistica'>Próximo Partido</Card.Title>
+                                            <Card.Subtitle className="mb-2 textEstadistica">Córdoba</Card.Subtitle>
+                                            <Card.Text className='textEstadistica'><h3>14/11/2023</h3></Card.Text>                                    
                                         </Card.Body>
                                     </Card>
                                 </Col>

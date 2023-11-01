@@ -2,6 +2,7 @@
   background-color: rgb(48,48,48); 
   color: rgb(209, 209, 209);
   min-height: 100vh;
+  padding-bottom: 80px;
 }
 
 .App {

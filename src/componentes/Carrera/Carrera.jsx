@@ -132,7 +132,7 @@ export function Carrera() {
     navigate("/privado/dashboard");
   };
 
-  function MydModalWithGrid(props) {
+  function VerAlumnosInscriptos(props) {
     return (
       <Modal {...props} aria-labelledby="contained-modal-title-vcenter" size="lg">
         
@@ -259,7 +259,7 @@ export function Carrera() {
           </Table>
         </div>
 
-        <MydModalWithGrid show={modalShow} onHide={() => setModalShow(false)} />
+        <VerAlumnosInscriptos show={modalShow} onHide={() => setModalShow(false)} />
 
         <Modal show={showModal} onHide={cerrarModal}>
           <Modal.Header closeButton>
