@@ -44,3 +44,8 @@ h2 {
 .miBoton {
     margin-right: 5px;
 }
+
+.foto{
+    width: 70px;
+    max-height: 70px;
+}
