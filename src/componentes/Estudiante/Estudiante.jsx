@@ -380,27 +380,20 @@ const handleShow = (estudiante) => {
               <Form.Label>apellido</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Nombre"
-                  value={estudiante.nombre}
+                  placeholder="Apellido"
+                  value={estudiante.apellido}
                   onChange={(e) =>
                     setEstudiante({ ...estudiante, apellido: e.target.value })}
                 />
-                <Form.Label>correoElectronico</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Nombre"
-                  value={estudiante.nombre}
-                  onChange={(e) =>
-                    setEstudiante({ ...estudiante, correoElectronico: e.target.value })}
-                />
+
 
 
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Form.Label>Celular</Form.Label>
+                <Form.Label>Correo electronico</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Nombre"
-                  value={estudiante.nombre}
+                  placeholder="Correo Electronico"
+                  value={estudiante.correoElectronico}
                   onChange={(e) =>
                     setEstudiante({ ...estudiante, correoElectronico: e.target.value })}
                 />
