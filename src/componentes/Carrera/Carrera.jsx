@@ -107,26 +107,32 @@ export function Carrera() {
 
   }; 
 
-  const actualizarCarrera = async () => {
-    try {
-      const response = await axios.put(baseURL + "/carrera/carreras", carrera);
-      if (response.data.estado === "OK") {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: response.data.msj,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        editarCarrera();
-        setShowEditModal(false);
-        setShow(false);
-        setEditMode(false); 
-        buscarCarreras();
-      }
-    } catch (error) {
-      console.error("Error al actualizar carrera:", error);
-    }
+  const actualizarCarrera = async (e) => {
+    e.preventDefault();
+
+    console.log("Datos a enviar en la solicitus PUT:", carrera);
+
+    axios
+      .put(baseURL + "/carrera/carreras", carrera)
+      .then((res) => {
+        console.log ("Respuesta de la api al actualizar", res.data);
+        if (res.data.estado === "OK") {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: res.data.msj,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          buscarCarreras();
+          editarCarrera();
+          setEditMode(false);
+          handleClose();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const dashboard = () => {
@@ -245,7 +251,7 @@ export function Carrera() {
                         Ver inscriptos
                       </Button>
 
-                      <Button variant="success" className="miBoton" onClick={()=> handleShow(item)}>
+                      <Button variant="success" onClick={()=> handleShow(item)}>
                         Editar
                       </Button>
                         
@@ -315,10 +321,10 @@ export function Carrera() {
         {/* Actualizacion */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Datos nuevo de la carrera</Modal.Title>
+          <Modal.Title>Editar carrera</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={actualizarCarrera}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 
 
@@ -353,7 +359,7 @@ export function Carrera() {
           <Button variant="secondary" onClick={handleClose}>
             Cerrar
           </Button>
-          <Button variant="primary" onClick={actualizarCarrera}>
+          <Button variant="primary" type="submit" onClick={actualizarCarrera}>
             Actualizar
           </Button>
         </Modal.Footer>
