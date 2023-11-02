@@ -116,7 +116,6 @@ export function Carrera() {
   const editarCarrera = (carrera) => {
     setEditMode(true);
     setCarrera(carrera);
-    /* setShowEditModal(true); */
 
   };
 
@@ -131,10 +130,8 @@ export function Carrera() {
           timer: 1500,
         });
         editarCarrera();
-        /* setShowEditModal(false); */
-        setShow(false);
-        setEditMode(false);
         buscarCarreras();
+        handleClose();
       }
     } catch (error) {
       console.error("Error al actualizar carrera:", error);
@@ -365,7 +362,7 @@ export function Carrera() {
             <Button variant="secondary" onClick={handleClose}>
               Cerrar
             </Button>
-            <Button variant="primary" onClick={actualizarCarrera}>
+            <Button variant="primary" onClick={() => handleShow(actualizarCarrera)}>
               Actualizar
             </Button>
           </Modal.Footer>
