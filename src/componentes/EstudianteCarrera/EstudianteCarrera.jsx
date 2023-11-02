@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../UserContext/UserContext';
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Button, Table, Form, InputGroup, Modal } from "react-bootstrap";
@@ -7,8 +8,9 @@ import { Button, Table, Form, InputGroup, Modal } from "react-bootstrap";
 import "./estudianteCarrera.css";
 
 export function EstudianteCarrera() {
-  const baseURL = "http://localhost:3005/api/v1/";
+  const baseURL = "http://localhost:3005";
   const navigate = useNavigate();
+  const { userData, setUserData } = useContext(UserContext);
 
   // objeto para almacenar la información de la inscripcion
   const [inscripcion, setInscripcion] = useState({
@@ -29,7 +31,7 @@ export function EstudianteCarrera() {
 
   const buscarEstudiantes = async () => {
     axios
-      .get(baseURL + "estudiante/estudiantes")
+      .get(baseURL + "/api/v1/estudiante/estudiantes", { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
         console.log(res.data.dato);
         setDatosEstudiante(res.data.dato);
@@ -42,12 +44,15 @@ export function EstudianteCarrera() {
 
   /* Para inscribir */
   const [modalInscripcion, setModalInscripcion] = useState(false);
-  const cerrarModalInscripcion = () => setModalInscripcion(false);
+  const cerrarModalInscripcion = () => {
+    setInscripcion({ ...inscripcion, carrera: "" });
+    setModalInscripcion(false);
+  };
 
 
   const buscarCarrerasNoInscripto = async (idEstudiante) => {
     axios
-      .get(baseURL + "estudianteCarrera/carrerasNoInscripto/" + idEstudiante)
+      .get(baseURL + "/api/v1/estudianteCarrera/carrerasNoInscripto/" + idEstudiante, { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
         setInscripcion({ ...inscripcion, estudiante: idEstudiante })
         setCarrerasNoInscripto(res.data.dato);
@@ -62,13 +67,12 @@ export function EstudianteCarrera() {
     e.preventDefault();
 
     axios
-      .post(baseURL + "estudianteCarrera/inscripcionCarrera", inscripcion)
+      .post(baseURL + "/api/v1/estudianteCarrera/inscripcionCarrera", inscripcion, { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
         console.log(res.data.estado);
         if (res.data.estado === "OK") {
 
           Swal.fire({
-            position: "top-end",
             icon: "success",
             title: res.data.msj,
             showConfirmButton: false,
@@ -105,7 +109,7 @@ export function EstudianteCarrera() {
 
   const buscarCarrerasInscripto = async (idEstudiante) => {
     axios
-      .get(baseURL + "estudianteCarrera/carrerasInscripto/" + idEstudiante)
+      .get(baseURL + "/api/v1/estudianteCarrera/carrerasInscripto/" + idEstudiante, { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
         setInscripcion({ ...inscripcion, estudiante: idEstudiante, carrera: "" })
         setCarrerasInscripto(res.data.dato);
@@ -120,12 +124,11 @@ export function EstudianteCarrera() {
     e.preventDefault();
     
     axios
-      .put(baseURL + "estudianteCarrera/inscripcionCarrera", inscripcion)
+      .put(baseURL + "/api/v1/estudianteCarrera/inscripcionCarrera", inscripcion, { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
         if (res.data.estado === "OK") {
 
           Swal.fire({
-            position: "top-end",
             icon: "success",
             title: res.data.msj,
             showConfirmButton: false,
@@ -193,6 +196,7 @@ export function EstudianteCarrera() {
         <Table striped bordered hover>
           <thead>
             <tr>
+              <th className="tabla-thead">Foto</th>
               <th className="tabla-thead">Legajo</th>
               <th className="tabla-thead">DNI</th>
               <th className="tabla-thead">Apellido</th>
@@ -206,6 +210,12 @@ export function EstudianteCarrera() {
             {datosEstudiante ? (
               datosEstudiante.map((item, index) => (
                 <tr key={index}>
+                  <td>
+                    <img
+                      className='foto'
+                      src={`http://localhost:3005/archivos/${item.foto}`} alt={item.foto}
+                    />
+                  </td>
                   <td>{item.idEstudiante}</td>
                   <td>{item.dni}</td>
                   <td>{item.apellido}</td>

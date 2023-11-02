@@ -1,30 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from '../UserContext/UserContext';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import {
-  Button,
-  Table,
-  Form,
-  Modal,
-  Container
-} from "react-bootstrap";
+import { Button, Table, Form, Modal, Container } from "react-bootstrap";
 
 import "./carrera.css";
 
 export function Carrera() {
-  const baseURL = "http://localhost:3005/api/v1";
+  const baseURL = "http://localhost:3005";
   const navigate = useNavigate();
+  const { userData, setUserData } = useContext(UserContext);
 
   const [showModal, setShowModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
+  /* const [showEditModal, setShowEditModal] = useState(false); */
 
   //Manejo del modal
   const verModal = () => setShowModal(true);
   const cerrarModal = () => setShowModal(false);
 
   // objeto para almacenar la información del formulario
-  const [carrera, setCarrera] = useState({ idCarrera:"", nombre: "", modalidad: "" });
+  const [carrera, setCarrera] = useState({ idCarrera: "", nombre: "", modalidad: "" });
 
 
   //Estado para el modo edicion
@@ -42,7 +38,7 @@ export function Carrera() {
 
   const buscarCarreras = async () => {
     axios
-      .get(baseURL + "/carrera/carreras")
+      .get(baseURL + "/api/v1/carrera/carreras", { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
         console.log(res);
         setDatos(res.data.dato);
@@ -53,25 +49,42 @@ export function Carrera() {
   };
 
   const eliminarCarrera = async (idCarrera) => {
-    axios
-      .delete(baseURL + "/carrera/carreras/" + idCarrera)
-      .then((res) => {
-        buscarCarreras();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    Swal.fire({
+      title: '¿Confirma que desea eliminar la carrera?',
+      showDenyButton: 'Si',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(baseURL + "/api/v1/carrera/carreras/" + idCarrera, {
+          headers: {
+            Authorization: `Bearer ${userData.token}`
+          }
+        })
+          .then(async resp => {
+            const result = await Swal.fire({
+              text: resp.data.msj,
+              icon: 'success'
+            });
+
+            if (result.isConfirmed) {
+              buscarCarreras();
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      }
+    })
   };
 
   const crearCarrera = async (e) => {
     e.preventDefault();
 
     axios
-      .post(baseURL + "/carrera/carreras", carrera)
+      .post(baseURL + "/api/v1/carrera/carreras", carrera, { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
         if (res.data.estado === "OK") {
           Swal.fire({
-            position: "top-end",
+
             icon: "success",
             title: res.data.msj,
             showConfirmButton: false,
@@ -89,7 +102,7 @@ export function Carrera() {
 
   const mostrarInscriptos = async (idCarrera) => {
     axios
-      .get(baseURL + "/estudianteCarrera/estudianteCarrera/" + idCarrera)
+      .get(baseURL + "/api/v1/estudianteCarrera/estudianteCarrera/" + idCarrera, { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
         setInscriptos(res.data.dato);
         setModalShow(true);
@@ -100,39 +113,32 @@ export function Carrera() {
   };
 
 
-   const editarCarrera = (carrera) => {
+  const editarCarrera = (carrera) => {
     setEditMode(true);
     setCarrera(carrera);
-    setShowEditModal(true);
+    /* setShowEditModal(true); */
 
-  }; 
+  };
 
-  const actualizarCarrera = async (e) => {
-    e.preventDefault();
-
-    console.log("Datos a enviar en la solicitus PUT:", carrera);
-
-    axios
-      .put(baseURL + "/carrera/carreras", carrera)
-      .then((res) => {
-        console.log ("Respuesta de la api al actualizar", res.data);
-        if (res.data.estado === "OK") {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: res.data.msj,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          buscarCarreras();
-          editarCarrera();
-          setEditMode(false);
-          handleClose();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const actualizarCarrera = async () => {
+    try {
+      const response = await axios.put(baseURL + "/api/v1/carrera/carreras", carrera, { headers: { Authorization: `Bearer ${userData.token}` } });
+      if (response.data.estado === "OK") {
+        Swal.fire({
+          icon: "success",
+          title: response.data.msj,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        editarCarrera();
+        /* setShowEditModal(false); */
+        setShow(false);
+        setEditMode(false);
+        buscarCarreras();
+      }
+    } catch (error) {
+      console.error("Error al actualizar carrera:", error);
+    }
   };
 
   const dashboard = () => {
@@ -142,7 +148,7 @@ export function Carrera() {
   function VerAlumnosInscriptos(props) {
     return (
       <Modal {...props} aria-labelledby="contained-modal-title-vcenter" size="lg">
-        
+
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             Alumnos inscriptos
@@ -190,11 +196,11 @@ export function Carrera() {
   const [modalShow, setModalShow] = useState(false);
 
 
-///Funcion de actualizar///
+  ///Funcion de actualizar///
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
-    setCarrera({idCarrera:"", nombre:"", modalidad:""});
+    setCarrera({ idCarrera: "", nombre: "", modalidad: "" });
     setEditMode(false);
     setShow(false);
   };
@@ -251,10 +257,10 @@ export function Carrera() {
                         Ver inscriptos
                       </Button>
 
-                      <Button variant="success" onClick={()=> handleShow(item)}>
+                      <Button variant="success" className="miBoton" onClick={() => handleShow(item)}>
                         Editar
                       </Button>
-                        
+
                       <Button
                         variant="danger"
                         onClick={() => eliminarCarrera(item.idCarrera)}
@@ -319,51 +325,51 @@ export function Carrera() {
         </Modal>
 
         {/* Actualizacion */}
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar carrera</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={actualizarCarrera}>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Datos nuevo de la carrera</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 
 
-              <Form.Label>Carrera</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Nombre"
-                value = {carrera.nombre}
-                onChange={(e) => 
-                      setCarrera({...carrera,nombre: e.target.value})}
-              />
+                <Form.Label>Carrera</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Nombre"
+                  value={carrera.nombre}
+                  onChange={(e) =>
+                    setCarrera({ ...carrera, nombre: e.target.value })}
+                />
 
-            </Form.Group>
+              </Form.Group>
 
-          
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Modalidad de la carrera</Form.Label>
-              <Form.Select
-                      onChange={(e) =>
-                        setCarrera({ ...carrera, modalidad: e.target.value })
-                      }
-                    >
-                      <option value="">Seleccionar...</option>
-                      <option value="0">presencial</option>
-                      <option value="1">virtual</option>
-                    </Form.Select>
 
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cerrar
-          </Button>
-          <Button variant="primary" type="submit" onClick={actualizarCarrera}>
-            Actualizar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Modalidad de la carrera</Form.Label>
+                <Form.Select
+                  onChange={(e) =>
+                    setCarrera({ ...carrera, modalidad: e.target.value })
+                  }
+                >
+                  <option value="">Seleccionar...</option>
+                  <option value="0">presencial</option>
+                  <option value="1">virtual</option>
+                </Form.Select>
+
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Cerrar
+            </Button>
+            <Button variant="primary" onClick={actualizarCarrera}>
+              Actualizar
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
 
 
