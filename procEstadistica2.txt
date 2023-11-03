@@ -1,0 +1,25 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `procEstadistica2`()
+    NO SQL
+BEGIN
+
+DECLARE Materia INT;
+Declare Carrera INT;
+Declare Estudiante INT;
+Declare cantidadInscriptos INT;
+
+SELECT COUNT(*) INTO Materia
+FROM materia;
+
+SELECT COUNT(*) INTO Carrera
+FROM carrera;
+
+SELECT COUNT(*) INTO Estudiante
+FROM estudiante;
+
+SELECT COUNT(*) INTO cantidadInscriptos
+FROM estudiantecarrera WHERE fechaBaja IS NULL;
+
+SELECT Materia, Estudiante, cantidadInscriptos, Carrera;
+END$$
+DELIMITER ;
