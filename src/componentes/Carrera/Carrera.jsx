@@ -11,36 +11,39 @@ export function Carrera() {
   const baseURL = "http://localhost:3005";
   const navigate = useNavigate();
   const { userData, setUserData } = useContext(UserContext);
-
-  const [showModal, setShowModal] = useState(false);
-  /* const [showEditModal, setShowEditModal] = useState(false); */
-
-  //Manejo del modal
-  const verModal = () => setShowModal(true);
-  const cerrarModal = () => setShowModal(false);
-
-  // objeto para almacenar la información del formulario
-  const [carrera, setCarrera] = useState({ idCarrera: "", nombre: "", modalidad: "" });
-
-
-  //Estado para el modo edicion
-  const [editMode, setEditMode] = useState(false);
-
-
-  // datos de carrera
-  const [datos, setDatos] = useState(null);
-
   const [inscriptos, setInscriptos] = useState(null);
 
-  useEffect(() => {
-    buscarCarreras();
-  }, []);
+   // objeto para almacenar la información de la carrera
+   const [carrera, setCarrera] = useState({
+     idCarrera: "",
+     nombre: "",
+     modalidad: ""
+   });
+ 
+   // Datos para buscar carreras 
+   const [datos, setDatos] = useState(null);
+ 
+   const [showModal, setShowModal] = useState(false);
+   const cerrarModal = () => setShowModal(false);
+   const verModal = () => { setShowModal(true); };
+ 
+ //para editar carrera//
+   const [editMode, setEditMode] = useState(false);
+ 
+ 
+ 
+   useEffect(() => {
+     buscarCarreras();
+   }, []);
 
-  const buscarCarreras = async () => {
-    axios
-      .get(baseURL + "/api/v1/carrera/carreras", { headers: { Authorization: `Bearer ${userData.token}` } })
+   const buscarCarreras = async () => {
+    axios.get(baseURL + '/api/v1/carrera/carreras', {
+      headers: {
+        Authorization: `Bearer ${userData.token}`  //Para autenticar al usuario
+      }
+    })
       .then((res) => {
-        console.log(res);
+        console.log(res.data.dato);
         setDatos(res.data.dato);
       })
       .catch((error) => {
@@ -116,7 +119,6 @@ export function Carrera() {
   const editarCarrera = (carrera) => {
     setEditMode(true);
     setCarrera(carrera);
-    /* setShowEditModal(true); */
 
   };
 
@@ -131,10 +133,8 @@ export function Carrera() {
           timer: 1500,
         });
         editarCarrera();
-        /* setShowEditModal(false); */
-        setShow(false);
-        setEditMode(false);
         buscarCarreras();
+        handleClose();
       }
     } catch (error) {
       console.error("Error al actualizar carrera:", error);
@@ -366,7 +366,7 @@ export function Carrera() {
             <Button variant="secondary" onClick={handleClose}>
               Cerrar
             </Button>
-            <Button variant="primary" onClick={actualizarCarrera}>
+            <Button variant="primary" onClick={() => handleShow(actualizarCarrera)}>
               Actualizar
             </Button>
           </Modal.Footer>

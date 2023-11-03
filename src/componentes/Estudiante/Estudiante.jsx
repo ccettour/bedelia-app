@@ -31,6 +31,11 @@ export function Estudiante() {
   const cerrarModal = () => setShowModal(false);
   const verModal = () => { setShowModal(true); };
 
+//para editar estudiante//
+  const [editMode, setEditMode] = useState(false);
+
+
+
   const cambiarFoto = (e) => {
     setFoto(e.target.files[0]);
   };
@@ -82,6 +87,31 @@ export function Estudiante() {
     })
   }
 
+  const editarEstudiante = (estudiante) => {
+    setEditMode(true);
+    setEstudiante(estudiante);
+
+  };
+
+  const actualizarEstudiante = async () => {
+    try {
+      const response = await axios.put(baseURL + "/api/v1/estudiante/estudiantes", estudiante, { headers: { Authorization: `Bearer ${userData.token}` } });
+      if (response.data.estado === "OK") {
+        Swal.fire({
+          icon: "success",
+          title: response.data.msj,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        editarEstudiante();
+        buscarEstudiantes();
+        handleClose();
+      }
+    } catch (error) {
+      console.error("Error al actualizar estudiante:", error);
+    }
+  };
+
   const enviarInformacion = async (e) => {
     e.preventDefault();
 
@@ -132,6 +162,25 @@ export function Estudiante() {
   const dashboard = () => {
     navigate("/privado/dashboard");
   };
+
+
+///Funcion de actualizar///
+const [show, setShow] = useState(false);
+
+const handleClose = () => {
+  setEstudiante({ legajo: "", foto: "",dni: "", nombre: "", apellido: ""  ,nacionalidad: "" ,correoElectronico: "", fechaNacimiento: "",celular: ""});
+  setEditMode(false);
+  setShow(false);
+};
+const handleShow = (estudiante) => {
+  setEstudiante(estudiante)
+  setShow(true);
+};
+
+
+
+
+
 
   return (
     <>
@@ -194,9 +243,9 @@ export function Estudiante() {
                   <td>{item.nacionalidad}</td>
                   <td>{item.correoElectronico}</td>
                   <td>
-                    <Button variant="success" className="miBoton">
-                      Editar
-                    </Button>
+                  <Button variant="success" className="miBoton" onClick={() => handleShow(item)}>
+                        Editar
+                      </Button>
                     <Button
                       variant="danger"
                       onClick={() => eliminarEstudiante(item.idEstudiante)}
@@ -212,7 +261,6 @@ export function Estudiante() {
           </tbody>
         </Table>
       </div>
-
 
       <Modal show={showModal} onHide={cerrarModal}>
         <Modal.Header closeButton>
@@ -308,6 +356,61 @@ export function Estudiante() {
           </Form>
         </Modal.Body>
       </Modal>
+
+      {/* Actualizacion */}
+      <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Datos nuevo del alumno</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+
+
+                <Form.Label>nombre</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Nombre"
+                  value={estudiante.nombre}
+                  onChange={(e) =>
+                    setEstudiante({ ...estudiante, nombre: e.target.value })}
+                />
+
+              </Form.Group>
+              <Form.Label>apellido</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Apellido"
+                  value={estudiante.apellido}
+                  onChange={(e) =>
+                    setEstudiante({ ...estudiante, apellido: e.target.value })}
+                />
+
+
+
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label>Correo electronico</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Correo Electronico"
+                  value={estudiante.correoElectronico}
+                  onChange={(e) =>
+                    setEstudiante({ ...estudiante, correoElectronico: e.target.value })}
+                />
+
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Cerrar
+            </Button>
+            <Button variant="primary" onClick={() => handleShow(actualizarEstudiante)}>
+              Actualizar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
     </>
   );
 }
