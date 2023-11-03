@@ -59,7 +59,6 @@ export function Materia() {
     axios
       .get(baseURL + "/api/v1/carrera/carreras", { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
-        console.log(res);
         setCarreras(res.data.dato);
       })
       .catch((error) => {
@@ -412,7 +411,6 @@ export function Materia() {
                 <Form.Group className="mb-3" controlId="formBasicNacionalidad">
                   <Form.Label>Carrera</Form.Label>
                   <Form.Select
-                    value={materia.idCarrera}
                     onChange={(e) =>
                       setMateria({ ...materia, idCarrera: e.target.value })}>
                     <option value="">Seleccionar...</option>
