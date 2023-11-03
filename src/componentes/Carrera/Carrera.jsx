@@ -267,6 +267,7 @@ export function Carrera() {
                       >
                         Eliminar
                       </Button>
+                      
                     </td>
                   </tr>
                 ))

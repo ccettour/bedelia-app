@@ -31,7 +31,7 @@ export function Estudiante() {
   const cerrarModal = () => setShowModal(false);
   const verModal = () => { setShowModal(true); };
 
-//para editar estudiante//
+  //para editar estudiante//
   const [editMode, setEditMode] = useState(false);
 
 
@@ -164,18 +164,18 @@ export function Estudiante() {
   };
 
 
-///Funcion de actualizar///
-const [show, setShow] = useState(false);
+  ///Funcion de actualizar///
+  const [show, setShow] = useState(false);
 
-const handleClose = () => {
-  setEstudiante({ legajo: "", foto: "",dni: "", nombre: "", apellido: ""  ,nacionalidad: "" ,correoElectronico: "", fechaNacimiento: "",celular: ""});
-  setEditMode(false);
-  setShow(false);
-};
-const handleShow = (estudiante) => {
-  setEstudiante(estudiante)
-  setShow(true);
-};
+  const handleClose = () => {
+    setEstudiante({ legajo: "", foto: "", dni: "", nombre: "", apellido: "", nacionalidad: "", correoElectronico: "", fechaNacimiento: "", celular: "" });
+    setEditMode(false);
+    setShow(false);
+  };
+  const handleShow = (estudiante) => {
+    setEstudiante(estudiante)
+    setShow(true);
+  };
 
 
 
@@ -216,8 +216,8 @@ const handleShow = (estudiante) => {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th className="tabla-thead">Legajo</th>
               <th className="tabla-thead">Foto</th>
+              <th className="tabla-thead">Legajo</th>
               <th className="tabla-thead">DNI</th>
               <th className="tabla-thead">Apellido</th>
               <th className="tabla-thead">Nombre</th>
@@ -243,13 +243,10 @@ const handleShow = (estudiante) => {
                   <td>{item.nacionalidad}</td>
                   <td>{item.correoElectronico}</td>
                   <td>
-                  <Button variant="success" className="miBoton" onClick={() => handleShow(item)}>
-                        Editar
-                      </Button>
-                    <Button
-                      variant="danger"
-                      onClick={() => eliminarEstudiante(item.idEstudiante)}
-                    >
+                    <Button variant="success" className="miBoton" onClick={() => handleShow(item)}>
+                      Editar
+                    </Button>
+                    <Button variant="danger" className="miBoton" onClick={() => eliminarEstudiante(item.idEstudiante)}>
                       Eliminar
                     </Button>
                   </td>
@@ -359,57 +356,57 @@ const handleShow = (estudiante) => {
 
       {/* Actualizacion */}
       <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Datos nuevo del alumno</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+        <Modal.Header closeButton>
+          <Modal.Title>Datos nuevo del alumno</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 
 
-                <Form.Label>nombre</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Nombre"
-                  value={estudiante.nombre}
-                  onChange={(e) =>
-                    setEstudiante({ ...estudiante, nombre: e.target.value })}
-                />
+              <Form.Label>nombre</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Nombre"
+                value={estudiante.nombre}
+                onChange={(e) =>
+                  setEstudiante({ ...estudiante, nombre: e.target.value })}
+              />
 
-              </Form.Group>
-              <Form.Label>apellido</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Apellido"
-                  value={estudiante.apellido}
-                  onChange={(e) =>
-                    setEstudiante({ ...estudiante, apellido: e.target.value })}
-                />
+            </Form.Group>
+            <Form.Label>apellido</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Apellido"
+              value={estudiante.apellido}
+              onChange={(e) =>
+                setEstudiante({ ...estudiante, apellido: e.target.value })}
+            />
 
 
 
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Form.Label>Correo electronico</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Correo Electronico"
-                  value={estudiante.correoElectronico}
-                  onChange={(e) =>
-                    setEstudiante({ ...estudiante, correoElectronico: e.target.value })}
-                />
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Correo electronico</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Correo Electronico"
+                value={estudiante.correoElectronico}
+                onChange={(e) =>
+                  setEstudiante({ ...estudiante, correoElectronico: e.target.value })}
+              />
 
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cerrar
-            </Button>
-            <Button variant="primary" onClick={() => handleShow(actualizarEstudiante)}>
-              Actualizar
-            </Button>
-          </Modal.Footer>
-        </Modal>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cerrar
+          </Button>
+          <Button variant="primary" onClick={() => handleShow(actualizarEstudiante)}>
+            Actualizar
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
     </>
   );
