@@ -1,19 +1,49 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../UserContext/UserContext';
+
 import { ProtectedElement } from '../ProtectedElement/ProtectedElement';
+import axios from 'axios';
+
 import { Button } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 
+
 import './dashboard.css';
-/* 
-import { estadistica } from './api/v1/estadistica'; */
+
 
 const Dashboard = () => {
+    const baseURL = 'http://localhost:3005';
     const navigate = useNavigate();
-    const { userData, setUserData } = useContext(UserContext);
-    const [estadisticas, setEstadisticas] = useState({ alumnosActivos: 0, inscripciones: 0 });
+    const { userData} = useContext(UserContext);
+    const [estadistica, setEstadistica] = useState({ materia: 0, carrera: 0, estudiante: 0 });
+
+
+    useEffect(()=>{
+        if(userData.user.tipoUsuario === 0){
+            buscarEstadistica();
+        }
+    },[]); 
+
+    const buscarEstadistica = async () =>{
+        await axios.get(baseURL + '/api/v1/estadistica/estadistica',{
+            headers:{
+                Authorization:`Bearer ${userData.token}` //necesario para la autenticacion del usuario en el api
+            }
+        })
+        .then( resp => {
+            setEstadistica(resp.data.dato);
+           /*  console.log(estadistica); */
+            console.log(estadistica[0].Materia);
+            /* console.log(resp.data.dato); */
+        })
+        .catch( error => {
+            console.log(error);
+        })
+    }
+
+
 
     const irAEstudiantes = () => {
         navigate(`/privado/estudiante`);
@@ -35,17 +65,6 @@ const Dashboard = () => {
         navigate(`/privado/estudianteMateria`);
     };
 
-   /*  useEffect(() => {
-        // Llama a la función estadistica para obtener los datos estadísticos
-        estadistica()
-            .then((datos) => {
-                setEstadisticas(datos);
-            })
-            .catch((error) => {
-                console.error('Error al obtener estadísticas: ' + error);
-            });
-    }, []);
- */
     return (userData.user ?
         <>
             <div className='container mt-3 mb-1 mb-5'>
@@ -112,9 +131,18 @@ const Dashboard = () => {
                                     <Col sm={6} md={4} lg={3}>
                                         <Card className='cardEstadistica'>
                                             <Card.Body>
-                                                <Card.Title className='titleEstadistica'>Carreras</Card.Title>
+                                                <Card.Title className='titleEstadistica'>Materia</Card.Title>
                                                 <Card.Subtitle className="mb-2 textEstadistica">cantidad</Card.Subtitle>
-                                                <Card.Text className='textEstadistica'><h3>100</h3></Card.Text>
+                                                <Card.Text className='textEstadistica'><h3>{estadistica[0].Materia}</h3></Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col sm={6} md={4} lg={3}>
+                                        <Card className='cardEstadistica'>
+                                            <Card.Body>
+                                                <Card.Title className='titleEstadistica'>Carrera</Card.Title>
+                                                <Card.Subtitle className="mb-2 textEstadistica">Cantidad</Card.Subtitle>
+                                                <Card.Text className='textEstadistica'><h3>{estadistica[0].Carrera}</h3></Card.Text>
                                             </Card.Body>
                                         </Card>
                                     </Col>
@@ -122,17 +150,8 @@ const Dashboard = () => {
                                         <Card className='cardEstadistica'>
                                             <Card.Body>
                                                 <Card.Title className='titleEstadistica'>Estudiantes</Card.Title>
-                                                <Card.Subtitle className="mb-2 textEstadistica">Inscriptos</Card.Subtitle>
-                                                <Card.Text className='textEstadistica'><h3>{estadisticas.alumnosActivos}</h3></Card.Text>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                    <Col sm={6} md={4} lg={3}>
-                                        <Card className='cardEstadistica'>
-                                            <Card.Body>
-                                                <Card.Title className='titleEstadistica'>Materias</Card.Title>
-                                                <Card.Subtitle className="mb-2 textEstadistica">Cantidad de materias</Card.Subtitle>
-                                                <Card.Text className='textEstadistica'><h3>{estadisticas.inscripciones}</h3></Card.Text>
+                                                <Card.Subtitle className="mb-2 textEstadistica">Cantidad de Estudiantes</Card.Subtitle>
+                                                <Card.Text className='textEstadistica'><h3>{estadistica[0].Estudiante}</h3></Card.Text>
                                             </Card.Body>
                                         </Card>
                                     </Col>
