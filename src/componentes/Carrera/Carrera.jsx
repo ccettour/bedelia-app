@@ -289,7 +289,7 @@ export function Carrera() {
           <Modal.Body>
             <Form onSubmit={(e) => crearCarrera(e)}>
               <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-8">
                   <Form.Group className="mb-3" controlId="formBasicNombre">
                     <Form.Label>Nombre</Form.Label>
                     <Form.Control
@@ -303,7 +303,7 @@ export function Carrera() {
                   </Form.Group>
                 </div>
 
-                <div className="col-md-6">
+                <div className="col-md-4">
                   <Form.Group className="mb-3" controlId="formBasicModalidad">
                     <Form.Label>Modalidad</Form.Label>
                     <Form.Select
