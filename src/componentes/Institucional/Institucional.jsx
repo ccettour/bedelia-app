@@ -9,6 +9,9 @@ import carr4 from "./img/carr4.png";
 export function Institucional() {
   return (
     <div className="container-fluid institucional">
+      <div className="titulo">
+        <h2>INSTITUCIONAL</h2>
+      </div>
       <h2 className="title-parrafo">Historia - FCAD UNER</h2>
       <p className="parrafo">
         La Facultad de Ciencias de la Administración (FCAD) de la Universidad

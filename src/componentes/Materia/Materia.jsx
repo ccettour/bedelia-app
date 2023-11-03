@@ -21,7 +21,7 @@ export function Materia() {
     idCarrera: ""
   });
 
-  const [carreras, setCarreras]  = useState(null);
+  const [carreras, setCarreras] = useState(null);
 
   // Datos de materias buscadas
   const [datos, setDatos] = useState(null);
@@ -155,6 +155,54 @@ export function Materia() {
     navigate("/privado/dashboard");
   };
 
+  ///Funcion de actualizar///
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => {
+    setMateria({
+      idMateria: "",
+      horasSemanales: "",
+      nombre: "",
+      tipoMateria: "",
+      idCarrera: ""
+    });
+    // setEditMode(false);
+    setShow(false);
+  };
+
+  const handleShow = (materia) => {
+    setMateria(materia);
+    buscarCarreras();
+    console.log(materia)
+    setShow(true);
+  };
+
+  const editarMateria = (materia) => {
+    //setEditMode(true);
+    setMateria(materia);
+  };
+
+  //const [editMode, setEditMode] = useState(false);
+
+  const actualizarMateria = async () => {
+    try {
+      const response = await axios.put(baseURL + "/api/v1/materia/materias", materia, { headers: { Authorization: `Bearer ${userData.token}` } });
+      if (response.data.estado === "OK") {
+        Swal.fire({
+          icon: "success",
+          title: response.data.msj,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        editarMateria();
+        buscarMaterias();
+        handleClose();
+      }
+    } catch (error) {
+      console.error("Error al actualizar materia:", error);
+    }
+  };
+
   return (
     <>
       <div className="titulo">
@@ -211,13 +259,10 @@ export function Materia() {
                   <td>{item.nombre}</td>
                   <td>{item.tipoMateria}</td>
                   <td>
-                    <Button variant="success" className="miBoton">
+                    <Button variant="success" className="miBoton" onClick={() => handleShow(item)}>
                       Editar
                     </Button>
-                    <Button
-                      variant="danger"
-                      onClick={() => eliminarMateria(item.idMateria)}
-                    >
+                    <Button variant="danger" className="miBoton" onClick={() => eliminarMateria(item.idMateria)}>
                       Eliminar
                     </Button>
                   </td>
@@ -295,14 +340,14 @@ export function Materia() {
                   >
                     <option value="">Seleccionar...</option>
                     <option value="0">NINGUNA</option>
-                {carreras ? (carreras.map((carrera) => (
-                  <option key={carrera.idCarrera} value={carrera.idCarrera}>
-                    {carrera.nombre}
-                  </option>
-                ))
-                ) : (
-                  <option value="">No hay carreras disponibles</option>
-                )}
+                    {carreras ? (carreras.map((carrera) => (
+                      <option key={carrera.idCarrera} value={carrera.idCarrera}>
+                        {carrera.nombre}
+                      </option>
+                    ))
+                    ) : (
+                      <option value="">No hay carreras disponibles</option>
+                    )}
                   </Form.Select>
                 </Form.Group>
               </div>
@@ -312,6 +357,88 @@ export function Materia() {
             </Button>
           </Form>
         </Modal.Body>
+      </Modal>
+
+      {/* Actualizacion */}
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Actualizar datos de la materia:</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <div className="row">
+              <div className="col-md-4">
+                <Form.Group className="mb-3" controlId="formBasicdni">
+                  <Form.Label>Hs. semanales</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={materia.horasSemanales}
+                    onChange={(e) =>
+                      setMateria({ ...materia, horasSemanales: e.target.value })
+                    }
+                    required
+                  />
+                </Form.Group>
+              </div>
+              <div className="col-md-8">
+                <Form.Group className="mb-3" controlId="formBasicNombre">
+                  <Form.Label>Nombre</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={materia.nombre}
+                    onChange={(e) =>
+                      setMateria({ ...materia, nombre: e.target.value })
+                    }
+                    required
+                  />
+                </Form.Group>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-5">
+                <Form.Group className="mb-3" controlId="formBasicNacionalidad">
+                  <Form.Label>Tipo</Form.Label>
+                  <Form.Select
+                    value={materia.tipoMateria}
+                    onChange={(e) =>
+                      setMateria({ ...materia, tipoMateria: e.target.value })}>
+                    <option value="">Seleccionar</option>
+                    <option value="0">ANUAL</option>
+                    <option value="1">CUATRIMESTRAL</option>
+                  </Form.Select>
+                </Form.Group>
+              </div>
+              <div className="col-md-5">
+                <Form.Group className="mb-3" controlId="formBasicNacionalidad">
+                  <Form.Label>Carrera</Form.Label>
+                  <Form.Select
+                    value={materia.idCarrera}
+                    onChange={(e) =>
+                      setMateria({ ...materia, idCarrera: e.target.value })}>
+                    <option value="">Seleccionar...</option>
+                    <option value="0">NINGUNA</option>
+                    {carreras ? (carreras.map((carrera) => (
+                      <option key={carrera.idCarrera} value={carrera.idCarrera}>
+                        {carrera.nombre}
+                      </option>
+                    ))
+                    ) : (
+                      <option value="">No hay carreras disponibles</option>
+                    )}
+                  </Form.Select>
+                </Form.Group>
+              </div>
+            </div>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cerrar
+          </Button>
+          <Button variant="primary" onClick={() => handleShow(actualizarMateria)}>
+            Actualizar
+          </Button>
+        </Modal.Footer>
       </Modal>
     </>
   );
