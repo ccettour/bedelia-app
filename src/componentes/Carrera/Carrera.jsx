@@ -13,30 +13,30 @@ export function Carrera() {
   const { userData, setUserData } = useContext(UserContext);
   const [inscriptos, setInscriptos] = useState(null);
 
-   // objeto para almacenar la información de la carrera
-   const [carrera, setCarrera] = useState({
-     idCarrera: "",
-     nombre: "",
-     modalidad: ""
-   });
- 
-   // Datos para buscar carreras 
-   const [datos, setDatos] = useState(null);
- 
-   const [showModal, setShowModal] = useState(false);
-   const cerrarModal = () => setShowModal(false);
-   const verModal = () => { setShowModal(true); };
- 
- //para editar carrera//
-   const [editMode, setEditMode] = useState(false);
- 
- 
- 
-   useEffect(() => {
-     buscarCarreras();
-   }, []);
+  // objeto para almacenar la información de la carrera
+  const [carrera, setCarrera] = useState({
+    idCarrera: "",
+    nombre: "",
+    modalidad: ""
+  });
 
-   const buscarCarreras = async () => {
+  // Datos para buscar carreras 
+  const [datos, setDatos] = useState(null);
+
+  const [showModal, setShowModal] = useState(false);
+  const cerrarModal = () => setShowModal(false);
+  const verModal = () => { setShowModal(true); };
+
+  //para editar carrera//
+  const [editMode, setEditMode] = useState(false);
+
+
+
+  useEffect(() => {
+    buscarCarreras();
+  }, []);
+
+  const buscarCarreras = async () => {
     axios.get(baseURL + '/api/v1/carrera/carreras', {
       headers: {
         Authorization: `Bearer ${userData.token}`  //Para autenticar al usuario
@@ -137,7 +137,15 @@ export function Carrera() {
         handleClose();
       }
     } catch (error) {
-      console.error("Error al actualizar carrera:", error);
+      if (error.response.data.estado === "FALLO") {
+        Swal.fire({
+          icon: "error",
+          title: "Complete todos los campos",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      console.error("Error al actualizar carrera: "+ error);
     }
   };
 
@@ -267,7 +275,7 @@ export function Carrera() {
                       >
                         Eliminar
                       </Button>
-                      
+
                     </td>
                   </tr>
                 ))
@@ -289,7 +297,7 @@ export function Carrera() {
           <Modal.Body>
             <Form onSubmit={(e) => crearCarrera(e)}>
               <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-8">
                   <Form.Group className="mb-3" controlId="formBasicNombre">
                     <Form.Label>Nombre</Form.Label>
                     <Form.Control
@@ -303,7 +311,7 @@ export function Carrera() {
                   </Form.Group>
                 </div>
 
-                <div className="col-md-6">
+                <div className="col-md-4">
                   <Form.Group className="mb-3" controlId="formBasicModalidad">
                     <Form.Label>Modalidad</Form.Label>
                     <Form.Select
@@ -342,10 +350,9 @@ export function Carrera() {
                   value={carrera.nombre}
                   onChange={(e) =>
                     setCarrera({ ...carrera, nombre: e.target.value })}
+                  required
                 />
-
               </Form.Group>
-
 
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Modalidad de la carrera</Form.Label>
@@ -366,7 +373,9 @@ export function Carrera() {
             <Button variant="secondary" onClick={handleClose}>
               Cerrar
             </Button>
-            <Button variant="primary" onClick={() => handleShow(actualizarCarrera)}>
+            <Button variant="primary" onClick={() => {
+              actualizarCarrera();
+            }}>
               Actualizar
             </Button>
           </Modal.Footer>

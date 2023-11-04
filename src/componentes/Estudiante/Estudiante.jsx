@@ -108,6 +108,14 @@ export function Estudiante() {
         handleClose();
       }
     } catch (error) {
+      if (error.response.data.estado === "FALLO") {
+        Swal.fire({
+          icon: "error",
+          title: "Complete todos los campos",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
       console.error("Error al actualizar estudiante:", error);
     }
   };
@@ -178,8 +186,41 @@ export function Estudiante() {
   };
 
 
+//Buscar estudiante
+const [busqueda, setBusqueda] = useState("");
 
+const handleInputChange = (e) => { setBusqueda(e.target.value); };
 
+const buscarPorCriterio = async () => {
+
+  if (busqueda.length > 0) {
+    axios
+      .get(baseURL + "/api/v1/estudiante/estudiante/" + busqueda, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`, //Para autenticar al usuario
+        },
+      })
+      .then((res) => {
+        if (res.data.dato.length == 0) {
+          Swal.fire({
+            icon: "error",
+            title: "No hay coincidencia",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          buscarEstudiantes();
+        } else {
+          setDatos(res.data.dato);
+          setBusqueda("");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    buscarEstudiantes();
+  }
+};
 
 
   return (
@@ -203,10 +244,13 @@ export function Estudiante() {
         <InputGroup className="mb-3">
           <Form.Control
             placeholder="Ingrese nombre, apellido o DNI"
-            aria-label="buscar-estudiante"
-            aria-describedby="campo-buscar-estudiante"
+            type="text"
+            required
+            value={busqueda}
+            onChange={handleInputChange}
           />
-          <Button variant="light" id="btn-buscar-estudiante">
+          <Button variant="light" onClick={buscarPorCriterio}
+          >
             Buscar
           </Button>
         </InputGroup>
@@ -269,7 +313,7 @@ export function Estudiante() {
               <div className="col-md-4">
                 <Form.Group className="mb-3" controlId="formBasicdni">
                   <Form.Label>DNI</Form.Label>
-                  <Form.Control type="text"
+                  <Form.Control type="number"
                     onChange={(e) => setEstudiante({ ...estudiante, dni: e.target.value })}
                     value={estudiante.dni} required />
                 </Form.Group>
@@ -329,7 +373,7 @@ export function Estudiante() {
               <div className="col-md-4">
                 <Form.Group className="mb-3" controlId="formBasicCelular">
                   <Form.Label>Celular</Form.Label>
-                  <Form.Control type="text"
+                  <Form.Control type="number"
                     onChange={(e) => setEstudiante({ ...estudiante, celular: e.target.value })}
                     value={estudiante.celular} required />
                 </Form.Group>
@@ -362,8 +406,6 @@ export function Estudiante() {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-
-
               <Form.Label>nombre</Form.Label>
               <Form.Control
                 type="text"
@@ -372,7 +414,6 @@ export function Estudiante() {
                 onChange={(e) =>
                   setEstudiante({ ...estudiante, nombre: e.target.value })}
               />
-
             </Form.Group>
             <Form.Label>apellido</Form.Label>
             <Form.Control
@@ -383,6 +424,14 @@ export function Estudiante() {
                 setEstudiante({ ...estudiante, apellido: e.target.value })}
             />
 
+            <Form.Label>DNI</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Dni"
+              value={estudiante.dni}
+              onChange={(e) =>
+                setEstudiante({ ...estudiante, dni: e.target.value })}
+            />
 
 
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -395,14 +444,25 @@ export function Estudiante() {
                   setEstudiante({ ...estudiante, correoElectronico: e.target.value })}
               />
 
+
+              <Form.Label>Nacionalidad</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Nacionalidad"
+                value={estudiante.nacionalidad}
+                onChange={(e) =>
+                  setEstudiante({ ...estudiante, nacionalidad: e.target.value })}
+              />
+
             </Form.Group>
+
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Cerrar
           </Button>
-          <Button variant="primary" onClick={() => handleShow(actualizarEstudiante)}>
+          <Button variant="primary" onClick={() => actualizarEstudiante()}>
             Actualizar
           </Button>
         </Modal.Footer>

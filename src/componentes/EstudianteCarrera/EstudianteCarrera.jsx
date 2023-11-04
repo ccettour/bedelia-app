@@ -164,6 +164,42 @@ export function EstudianteCarrera() {
     navigate("/privado/dashboard");
   };
 
+  //Buscar estudiante
+  const [busqueda, setBusqueda] = useState("");
+
+  const handleInputChange = (e) => { setBusqueda(e.target.value); };
+
+  const buscarPorCriterio = async () => {
+
+    if (busqueda.length > 0) {
+      axios
+        .get(baseURL + "/api/v1/estudiante/estudiante/" + busqueda, {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, //Para autenticar al usuario
+          },
+        })
+        .then((res) => {
+          if (res.data.dato.length == 0) {
+            Swal.fire({
+              icon: "error",
+              title: "No hay coincidencia",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            buscarEstudiantes();
+          } else {
+            setDatosEstudiante(res.data.dato);
+            setBusqueda("");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      buscarEstudiantes();
+    }
+  };
+
 
   return (
     <>
@@ -183,10 +219,12 @@ export function EstudianteCarrera() {
         <InputGroup className="mb-3">
           <Form.Control
             placeholder="Ingrese nombre, apellido o DNI"
-            aria-label="buscar-estudiante"
-            aria-describedby="campo-buscar-estudiante"
+            type="text"
+            required
+            value={busqueda}
+            onChange={handleInputChange}
           />
-          <Button variant="light" id="btn-buscar-estudiante">
+          <Button variant="light" onClick={buscarPorCriterio}>
             Buscar
           </Button>
         </InputGroup>

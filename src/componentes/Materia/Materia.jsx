@@ -59,7 +59,6 @@ export function Materia() {
     axios
       .get(baseURL + "/api/v1/carrera/carreras", { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
-        console.log(res);
         setCarreras(res.data.dato);
       })
       .catch((error) => {
@@ -166,7 +165,6 @@ export function Materia() {
       tipoMateria: "",
       idCarrera: ""
     });
-    // setEditMode(false);
     setShow(false);
   };
 
@@ -178,13 +176,11 @@ export function Materia() {
   };
 
   const editarMateria = (materia) => {
-    //setEditMode(true);
     setMateria(materia);
   };
 
-  //const [editMode, setEditMode] = useState(false);
-
   const actualizarMateria = async () => {
+    buscarCarreras();
     try {
       const response = await axios.put(baseURL + "/api/v1/materia/materias", materia, { headers: { Authorization: `Bearer ${userData.token}` } });
       if (response.data.estado === "OK") {
@@ -199,7 +195,15 @@ export function Materia() {
         handleClose();
       }
     } catch (error) {
-      console.error("Error al actualizar materia:", error);
+      if (error.response.data.estado === "FALLO") {
+        Swal.fire({
+          icon: "error",
+          title: "Complete todos los campos",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      console.error("Error al actualizar la materia: "+ error);
     }
   };
 
@@ -231,7 +235,6 @@ export function Materia() {
           />
           <Button
             variant="light"
-            id="btn-buscar-materia"
             onClick={() => buscarPorNombre(materia.nombre)}
           >
             Buscar
@@ -412,7 +415,6 @@ export function Materia() {
                 <Form.Group className="mb-3" controlId="formBasicNacionalidad">
                   <Form.Label>Carrera</Form.Label>
                   <Form.Select
-                    value={materia.idCarrera}
                     onChange={(e) =>
                       setMateria({ ...materia, idCarrera: e.target.value })}>
                     <option value="">Seleccionar...</option>
@@ -435,7 +437,9 @@ export function Materia() {
           <Button variant="secondary" onClick={handleClose}>
             Cerrar
           </Button>
-          <Button variant="primary" onClick={() => handleShow(actualizarMateria)}>
+          <Button variant="primary" onClick={() => {
+            actualizarMateria();
+          }}>
             Actualizar
           </Button>
         </Modal.Footer>

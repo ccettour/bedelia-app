@@ -34,9 +34,6 @@ const Dashboard = () => {
         })
         .then( resp => {
             setEstadistica(resp.data.dato);
-           /*  console.log(estadistica); */
-            console.log(estadistica[0].Materia);
-            /* console.log(resp.data.dato); */
         })
         .catch( error => {
             console.log(error);
@@ -133,7 +130,7 @@ const Dashboard = () => {
                                             <Card.Body>
                                                 <Card.Title className='titleEstadistica'>Materia</Card.Title>
                                                 <Card.Subtitle className="mb-2 textEstadistica">cantidad</Card.Subtitle>
-                                                <Card.Text className='textEstadistica'><h3>{estadistica[0].Materia}</h3></Card.Text>
+                                                <Card.Text className='textEstadistica'><h3>{estadistica && estadistica[0] && estadistica[0].Materia}</h3></Card.Text>
                                             </Card.Body>
                                         </Card>
                                     </Col>
@@ -142,7 +139,7 @@ const Dashboard = () => {
                                             <Card.Body>
                                                 <Card.Title className='titleEstadistica'>Carrera</Card.Title>
                                                 <Card.Subtitle className="mb-2 textEstadistica">Cantidad</Card.Subtitle>
-                                                <Card.Text className='textEstadistica'><h3>{estadistica[0].Carrera}</h3></Card.Text>
+                                                <Card.Text className='textEstadistica'><h3>{estadistica && estadistica[0] && estadistica[0].Carrera}</h3></Card.Text>
                                             </Card.Body>
                                         </Card>
                                     </Col>
@@ -151,7 +148,16 @@ const Dashboard = () => {
                                             <Card.Body>
                                                 <Card.Title className='titleEstadistica'>Estudiantes</Card.Title>
                                                 <Card.Subtitle className="mb-2 textEstadistica">Cantidad de Estudiantes</Card.Subtitle>
-                                                <Card.Text className='textEstadistica'><h3>{estadistica[0].Estudiante}</h3></Card.Text>
+                                                <Card.Text className='textEstadistica'><h3>{estadistica && estadistica[0] && estadistica[0].Estudiante}</h3></Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                    <Col sm={6} md={4} lg={3}>
+                                        <Card className='cardEstadistica'>
+                                            <Card.Body>
+                                                <Card.Title className='titleEstadistica'>Inscripciones</Card.Title>
+                                                <Card.Subtitle className="mb-2 textEstadistica">Cantidad de Inscripciones en carreras</Card.Subtitle>
+                                                <Card.Text className='textEstadistica'><h3>{estadistica && estadistica[0] && estadistica[0].cantidadInscriptos}</h3></Card.Text>
                                             </Card.Body>
                                         </Card>
                                     </Col>
