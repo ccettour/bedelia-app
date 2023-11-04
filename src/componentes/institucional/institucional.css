@@ -23,13 +23,38 @@
 .container-carrusel{
     display: grid;
     justify-items: center;
+    z-index: 1;
 }
 
 .img-carrusel{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     user-select: none;
-    width: 80%;
+    width: 50%;
+    overflow: hidden;
 }
+
+.img-carrusel img {
+    max-width: 400px;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.carousel .thumbs-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .carousel .thumbs {
+    width: auto;
+  }
+
+  .carousel .thumb {
+    margin: 0 5px;
+    width: 60px;
+    height: 80px;
+  }
