@@ -51,7 +51,7 @@ export function Materia() {
         setDatos(res.data.dato);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Error en la búsqueda de materias: ", error);
       });
   };
 
@@ -62,12 +62,12 @@ export function Materia() {
         setCarreras(res.data.dato);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Error al buscar carrera: ", error);
       });
   };
 
   const buscarPorNombre = async (nombre) => {
-    console.log(baseURL + "/api/v1/materia/materias/" + nombre);
+
     axios
       .get(baseURL + "/api/v1/materia/materias/" + nombre, {
         headers: {
@@ -75,11 +75,21 @@ export function Materia() {
         },
       })
       .then((res) => {
-        console.log(res.data.dato);
-        setDatos(res.data.dato);
+        if (res.data.dato.length == 0) {
+          Swal.fire({
+            icon: "error",
+            title: "No hay coincidencia",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          buscarMaterias();
+        } else {
+          setDatos(res.data.dato);
+        }
+        setMateria({ ...materia, nombre: "" })
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Error al buscar la materia: ", error);
       });
   };
 
@@ -99,6 +109,8 @@ export function Materia() {
             const result = await Swal.fire({
               text: resp.data.msj,
               icon: "success",
+              showConfirmButton: false,
+              timer: 1500
             });
 
             if (result.isConfirmed) {
@@ -115,8 +127,6 @@ export function Materia() {
   const enviarInformacion = async (e) => {
     e.preventDefault();
 
-    console.log(materia);
-
     try {
       const response = await axios.post(
         baseURL + "/api/v1/materia/materias",
@@ -132,9 +142,10 @@ export function Materia() {
         const result = await Swal.fire({
           text: response.data.msj,
           icon: "success",
+          showConfirmButton: false,
+          timer: 1500
         });
 
-        if (result.isConfirmed) {
           cerrarModal();
           buscarMaterias();
           setMateria({
@@ -143,7 +154,6 @@ export function Materia() {
             nombre: "",
             tipoMateria: "",
           });
-        }
       }
     } catch (error) {
       console.error("Error al crear la materia: ", error);
@@ -171,7 +181,7 @@ export function Materia() {
   const handleShow = (materia) => {
     setMateria(materia);
     buscarCarreras();
-    console.log(materia)
+    //console.log(materia)
     setShow(true);
   };
 
@@ -203,7 +213,7 @@ export function Materia() {
           timer: 1500,
         });
       }
-      console.error("Error al actualizar la materia: "+ error);
+      console.error("Error al actualizar la materia: " + error);
     }
   };
 

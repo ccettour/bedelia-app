@@ -35,11 +35,10 @@ export function EstudianteMateria() {
       }
     })
       .then(resp => {
-        console.log(resp.data.dato);
         setDatosEstudiante(resp.data.dato);
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       })
   }
 
@@ -70,7 +69,6 @@ export function EstudianteMateria() {
     axios
       .post(baseURL + "/api/v1/estudianteMateria/inscripcionMateria", inscripcion, { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
-        console.log(res.data.estado);
         if (res.data.estado === "OK") {
 
           Swal.fire({
@@ -145,7 +143,6 @@ export function EstudianteMateria() {
         }
       })
       .catch((error) => {
-        console.log(error.response.data)
         if (error.response.data.estado === "FALLO") {
           Swal.fire({
             icon: "error",
@@ -189,8 +186,8 @@ export function EstudianteMateria() {
             buscarEstudiantes();
           } else {
             setDatosEstudiante(res.data.dato);
-            setBusqueda("");
           }
+          setBusqueda("");
         })
         .catch((error) => {
           console.log(error);

@@ -43,7 +43,6 @@ export function Carrera() {
       }
     })
       .then((res) => {
-        console.log(res.data.dato);
         setDatos(res.data.dato);
       })
       .catch((error) => {
@@ -65,7 +64,9 @@ export function Carrera() {
           .then(async resp => {
             const result = await Swal.fire({
               text: resp.data.msj,
-              icon: 'success'
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500
             });
 
             if (result.isConfirmed) {
@@ -145,7 +146,7 @@ export function Carrera() {
           timer: 1500,
         });
       }
-      console.error("Error al actualizar carrera: "+ error);
+      console.error("Error al actualizar carrera: " + error);
     }
   };
 

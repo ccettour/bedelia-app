@@ -31,11 +31,6 @@ export function Estudiante() {
   const cerrarModal = () => setShowModal(false);
   const verModal = () => { setShowModal(true); };
 
-  //para editar estudiante//
-  const [editMode, setEditMode] = useState(false);
-
-
-
   const cambiarFoto = (e) => {
     setFoto(e.target.files[0]);
   };
@@ -51,7 +46,6 @@ export function Estudiante() {
       }
     })
       .then((res) => {
-        console.log(res.data.dato);
         setDatos(res.data.dato);
       })
       .catch((error) => {
@@ -88,9 +82,7 @@ export function Estudiante() {
   }
 
   const editarEstudiante = (estudiante) => {
-    setEditMode(true);
     setEstudiante(estudiante);
-
   };
 
   const actualizarEstudiante = async () => {
@@ -177,7 +169,6 @@ export function Estudiante() {
 
   const handleClose = () => {
     setEstudiante({ legajo: "", foto: "", dni: "", nombre: "", apellido: "", nacionalidad: "", correoElectronico: "", fechaNacimiento: "", celular: "" });
-    setEditMode(false);
     setShow(false);
   };
   const handleShow = (estudiante) => {
@@ -186,41 +177,41 @@ export function Estudiante() {
   };
 
 
-//Buscar estudiante
-const [busqueda, setBusqueda] = useState("");
+  //Buscar estudiante
+  const [busqueda, setBusqueda] = useState("");
 
-const handleInputChange = (e) => { setBusqueda(e.target.value); };
+  const handleInputChange = (e) => { setBusqueda(e.target.value); };
 
-const buscarPorCriterio = async () => {
+  const buscarPorCriterio = async () => {
 
-  if (busqueda.length > 0) {
-    axios
-      .get(baseURL + "/api/v1/estudiante/estudiante/" + busqueda, {
-        headers: {
-          Authorization: `Bearer ${userData.token}`, //Para autenticar al usuario
-        },
-      })
-      .then((res) => {
-        if (res.data.dato.length == 0) {
-          Swal.fire({
-            icon: "error",
-            title: "No hay coincidencia",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          buscarEstudiantes();
-        } else {
-          setDatos(res.data.dato);
+    if (busqueda.length > 0) {
+      axios
+        .get(baseURL + "/api/v1/estudiante/estudiante/" + busqueda, {
+          headers: {
+            Authorization: `Bearer ${userData.token}`, //Para autenticar al usuario
+          },
+        })
+        .then((res) => {
+          if (res.data.dato.length == 0) {
+            Swal.fire({
+              icon: "error",
+              title: "No hay coincidencia",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            buscarEstudiantes();
+          } else {
+            setDatos(res.data.dato);
+          }
           setBusqueda("");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  } else {
-    buscarEstudiantes();
-  }
-};
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      buscarEstudiantes();
+    }
+  };
 
 
   return (
@@ -365,7 +356,7 @@ const buscarPorCriterio = async () => {
               <div className="col-md-8">
                 <Form.Group className="mb-3" controlId="formBasicCorreoElectronico">
                   <Form.Label>Correo Electrónico</Form.Label>
-                  <Form.Control type="text"
+                  <Form.Control type="email"
                     onChange={(e) => setEstudiante({ ...estudiante, correoElectronico: e.target.value })}
                     value={estudiante.correoElectronico} required />
                 </Form.Group>
@@ -401,12 +392,12 @@ const buscarPorCriterio = async () => {
       {/* Actualizacion */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Datos nuevo del alumno</Modal.Title>
+          <Modal.Title>Datos nuevos del alumno</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>nombre</Form.Label>
+              <Form.Label>Nombre</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Nombre"
@@ -415,7 +406,7 @@ const buscarPorCriterio = async () => {
                   setEstudiante({ ...estudiante, nombre: e.target.value })}
               />
             </Form.Group>
-            <Form.Label>apellido</Form.Label>
+            <Form.Label>Apellido</Form.Label>
             <Form.Control
               type="text"
               placeholder="Apellido"
@@ -433,27 +424,28 @@ const buscarPorCriterio = async () => {
                 setEstudiante({ ...estudiante, dni: e.target.value })}
             />
 
-
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Correo electronico</Form.Label>
+              <Form.Label>Correo electrónico</Form.Label>
               <Form.Control
-                type="text"
+                type="email"
                 placeholder="Correo Electronico"
                 value={estudiante.correoElectronico}
                 onChange={(e) =>
                   setEstudiante({ ...estudiante, correoElectronico: e.target.value })}
               />
 
-
-              <Form.Label>Nacionalidad</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Nacionalidad"
-                value={estudiante.nacionalidad}
-                onChange={(e) =>
-                  setEstudiante({ ...estudiante, nacionalidad: e.target.value })}
-              />
-
+              <Form.Group className="mb-3" controlId="formBasicNacionalidad">
+                <Form.Label>Nacionalidad</Form.Label>
+                <Form.Select value={estudiante.nacionalidad} onChange={(e) => setEstudiante({ ...estudiante, nacionalidad: e.target.value })}>
+                  <option value="">Seleccionar</option>
+                  <option value="0">Argentino</option>
+                  <option value="1">Uruguayo</option>
+                  <option value="2">Chileno</option>
+                  <option value="3">Paraguayo</option>
+                  <option value="4">Brasilero</option>
+                  <option value="5">Boliviano</option>
+                </Form.Select>
+              </Form.Group>
             </Form.Group>
 
           </Form>

@@ -20,8 +20,6 @@ export function Login() {
         axios.post(baseURL + "auth/login", formulario)
             .then(res => {
                 if (res.status === 200) {
-                    console.log(formulario)
-                    console.log(res.data);
 
                     // con los datos del usuario seteo el contexto del usuario, 
                     // también seteo el token para utilizarlo en las consultas al back

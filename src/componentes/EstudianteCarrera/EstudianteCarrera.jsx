@@ -33,7 +33,6 @@ export function EstudianteCarrera() {
     axios
       .get(baseURL + "/api/v1/estudiante/estudiantes", { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
-        console.log(res.data.dato);
         setDatosEstudiante(res.data.dato);
       })
       .catch((error) => {
@@ -69,7 +68,6 @@ export function EstudianteCarrera() {
     axios
       .post(baseURL + "/api/v1/estudianteCarrera/inscripcionCarrera", inscripcion, { headers: { Authorization: `Bearer ${userData.token}` } })
       .then((res) => {
-        console.log(res.data.estado);
         if (res.data.estado === "OK") {
 
           Swal.fire({
@@ -146,7 +144,6 @@ export function EstudianteCarrera() {
         }
       })
       .catch((error) => {
-        console.log(error.response.data)
         if (error.response.data.estado === "FALLO") {
           Swal.fire({
             icon: "error",
@@ -179,7 +176,7 @@ export function EstudianteCarrera() {
           },
         })
         .then((res) => {
-          if (res.data.dato.length == 0) {
+          if (res.data.dato.length === 0) {
             Swal.fire({
               icon: "error",
               title: "No hay coincidencia",
@@ -189,8 +186,8 @@ export function EstudianteCarrera() {
             buscarEstudiantes();
           } else {
             setDatosEstudiante(res.data.dato);
-            setBusqueda("");
           }
+          setBusqueda("");
         })
         .catch((error) => {
           console.log(error);

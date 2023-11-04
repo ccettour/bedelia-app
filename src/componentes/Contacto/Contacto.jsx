@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import Swal from "sweetalert2";
+import { Button, Form, Col, Row } from "react-bootstrap";
 import "./contacto.css";
 
 export function Contacto() {
@@ -27,10 +25,15 @@ export function Contacto() {
     const enviarMensaje = async (e) => {
         e.preventDefault();
 
-        axios.post(baseURL+'/api/v1/publico/contacto', formData)
-            .then(res => {
-                console.log(res);
-                alert(res.data.respuesta)
+        axios.post(baseURL + '/api/v1/publico/contacto', formData)
+            .then(async (resp) => {
+                const result = await Swal.fire({
+                    text: resp.data.respuesta,
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                
                 //Para resetear los valores del formulario:
                 setFormData({ nombre: '', email: '', mensaje: '' })
             })
